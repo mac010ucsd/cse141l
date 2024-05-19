@@ -8,7 +8,7 @@ module alu(
           sel_shift_mux,
           shift_dir,
           shift_mode,
-    input[3:0] sel_out_mux,
+    input[2:0] sel_out_mux,
     input[7:0] input_A, input_B,	 // 8-bit wide data path
     output logic[7:0] out,
     output logic[2:0] flags
@@ -43,8 +43,8 @@ logic [7:0]one;
 adder alu_adder (.cin(out_bit_mux), .input_A(out_a_mux), 
   .input_B(out_b_mux), .cout(cflag), .out(add_out));
 
-widemux alu_mux (.in0(inv_input_A), .in1(and_out), .in2(or_out), .in3(xor_out), 
-  .in4(add_out), .in5(shift_out), .in6(zero), .in7(one), .sel(sel_out_mux), .out(out));
+widemux alu_mux (.in0(zero), .in1(and_out), .in2(or_out), .in3(xor_out), 
+  .in4(add_out), .in5(shift_out), .in6(inv_input_A), .in7(one), .sel(sel_out_mux), .out(out));
 
 alu_and alu_and (.input_A(out_a_mux), .input_B(out_b_mux), .out(and_out));
 alu_or alu_or (.input_A(out_a_mux), .input_B(out_b_mux), .out(or_out));

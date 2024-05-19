@@ -1,31 +1,166 @@
-// control decoder (EXAMPLE CODE)
-module control #(parameter opwidth = 3, mcodebits = 4)(
-  input [mcodebits-1:0] instr,    // subset of machine code (any width you need)
-  output logic RegDst, Branch, 
-     MemtoReg, MemWrite, ALUSrc, RegWrite,
-  output logic[opwidth-1:0] ALUOp);	   // for up to 8 ALU operations
+module control (
+  input [8:0] instr,    // subset of machine code (any width you need)
+  output logic sel_a_mux,
+  sel_b_mux,
+  sel_gd_b_mux,
+  sel_bit_mux,
+  sel_shift_mux,
+  shift_dir,
+  shift_mode,
+  reg_wr_en,
+  dat_wr_en,
+  pc_jmp_abs,
+  pc_jmp_rel,
+  reg_in_sel,
+  dat_in_sel,
+  reg_alu_dat_sel,
+  output logic [2:0] alu_sel_out;
+)
+/*
+output sel_a_mux,
+sel_b_mux,
+sel_gd_b_mux,
+sel_bit_mux,
+sel_shift_mux,
+shift_dir,
+shift_mode,
+reg_wr_en,
+dat_wr_en,
+output [3:0] sel_out_mux
+*/
+
+/*
+widemux alu_mux (.in0(zero), .in1(and_out), .in2(or_out), .in3(xor_out), 
+  .in4(add_out), .in5(shift_out), .in6(inv_input_A), .in7(one), .sel(sel_out_mux), .out(out));
+*/
 
 always_comb begin
-// defaults
-  RegDst 	=   'b0;   // 1: not in place  just leave 0
-  Branch 	=   'b0;   // 1: branch (jump)
-  MemWrite  =	'b0;   // 1: store to memory
-  ALUSrc 	=	'b0;   // 1: immediate  0: second reg file output
-  RegWrite  =	'b1;   // 0: for store or no op  1: most other operations 
-  MemtoReg  =	'b0;   // 1: load -- route memory instead of ALU to reg_file data in
-  ALUOp	    =   'b111; // y = a+0;
-// sample values only -- use what you need
-case(instr)    // override defaults with exceptions
-  'b0000:  begin					// store operation
-               MemWrite = 'b1;      // write to data mem
-               RegWrite = 'b0;      // typically don't also load reg_file
-			 end
-  'b00001:  ALUOp      = 'b000;  // add:  y = a+b
-  'b00010:  begin				  // load
-			   MemtoReg = 'b1;    // 
-             end
-// ...
-endcase
+  // defaults
+  sel_a_mux = 'b0;        // 1 = invert
+  sel_b_mux = 'b0;        // 1 = invert
+  sel_gd_b_mux = 'b0;     // 1 = b is gd
+  sel_bit_mux = 'b0;      // 0 or 1 bit
+  sel_shift_mux = 'b0;    // shift with bit (0) or b_mux (1)
+  shift_dir = 'b0;        // 0 = L, 1 = R
+  shift_mode = 'b0;       // 0 = sh, 1 = rot
+  reg_wr_en = 'b0;        
+  dat_wr_en = 'b0;
+  pc_jmp_abs = 'b0;
+  pc_jmp_rel = 'b0;
+  alu_sel_out = 'b0;      // to do i guess.
+  reg_in_sel = 'b0;
+  reg_alu_dat_sel = 'b0;
+  dat_in_sel = 'b0;
+
+  casez(instr[8:3])   // take 6 msb as opcode.
+    'b000???: begin // cmp, same as subtract. (A - B)
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b1;
+      sel_bit_mux = 1'b1; // carry in = 1
+      alu_sel_out = 3'b100;
+    end
+    'b001???: begin // mov
+      reg_wr_en = 1'b1;
+      reg_in_sel = 1'b1;
+      // no alu sel out
+    end
+    'b01000?: begin // add
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b0;
+      sel_bit_mux = 1'b0;
+      alu_sel_out = 3'b100;
+    end
+    'b01001?: begin // sub
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b1; // invert for sub
+      sel_bit_mux = 1'b1;
+      alu_sel_out = 3'b100;
+    end
+    'b01010?: begin // lsl 2r 2r
+      sel_a_mux = 1'b0;
+      sel_shift_mux = 1'b0; // shift with b
+      shift_dir = 'b0;
+      shift_mode = 'b0;
+      alu_sel_out = 3'b101;
+    end
+    'b01011?: begin // rol 2r 2r
+      sel_a_mux = 1'b0;
+      sel_shift_mux = 1'b0; // shift with b
+      shift_dir = 'b0;
+      shift_mode = 'b1;
+      alu_sel_out = 3'b101;
+    end
+    'b01100?: begin // and
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b0;
+      alu_sel_out = 3'b001;
+    end
+    'b01101?: begin // or
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b0;
+      alu_sel_out = 3'b010;
+    end
+    'b01110?: begin // xor
+      sel_a_mux = 1'b0;
+      sel_b_mux = 1'b0;
+      alu_sel_out = 3'b011;
+    end
+    'b10000?: begin // jge TODO
+      pc_jmp_abs = 1'b0;
+    end
+    'b10001?: begin // jg TODO
+      pc_jmp_abs = 1'b0;
+    end
+    'b10010?: begin // jmp TODO
+      pc_jmp_abs = 1'b0;
+    end
+    'b101000: begin // inc
+      sel_bit_mux = 1'b1; // select 1 bit carry in
+      sel_gd_b_mux = 1'b1; // select gd as B
+      alu_sel_out = 3'b100; // add out select
+    end
+    'b101001: begin // lsl 
+      sel_a_mux = 1'b0;
+      sel_shift_mux = 1'b1;
+      sel_shift_mux = 1'b1; // shift with bit
+      shift_dir = 'b0;
+      shift_mode = 'b0;
+      alu_sel_out = 3'b101;
+    end
+    'b101010: begin // rol 
+      sel_a_mux = 1'b0;
+      sel_shift_mux = 1'b1;
+      sel_shift_mux = 1'b1; // shift with bit
+      shift_dir = 'b0;
+      shift_mode = 'b1;
+      alu_sel_out = 3'b101;
+    end
+    'b101011: begin // clr 
+      sel_a_mux = 1'b0;
+      sel_gd_b_mux = 1'b1; // gnd as B
+      alu_sel_out = 3'b001; // A & 0
+    end
+    'b101100: begin // not 
+      sel_a_mux = 1'b1; // ~A
+      alu_sel_out = 3'b110; // ~A
+    end
+    'b101101: begin // ldr 
+      reg_wr_en = 1'b1;
+      reg_alu_dat_sel = 1'b1; // data from dat mem into reg dat in. 
+    end
+    'b101110: begin // str 
+      dat_wr_en = 1'b1;
+      dat_in_sel = 1'b1;  // select data from re g file to go into dat_in
+    end
+    'b110000: begin // ldr 
+      reg_wr_en = 1'b1;
+      reg_alu_dat_sel = 1'b1; // data from dat mem into reg dat in. 
+    end
+    'b110001: begin // str 
+      dat_wr_en = 1'b1;
+      dat_in_sel = 1'b1;  // select data from re g file to go into dat_in
+    end
+  endcase
 
 end
 	
