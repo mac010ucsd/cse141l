@@ -10,7 +10,6 @@ module control (
   reg_wr_en,
   dat_wr_en,
   pc_jmp_abs,
-  pc_jmp_rel,
   reg_in_sel,
   dat_in_sel,
   reg_alu_dat_sel,
@@ -24,8 +23,6 @@ sel_bit_mux,
 sel_shift_mux,
 shift_dir,
 shift_mode,
-reg_wr_en,
-dat_wr_en,
 output [3:0] sel_out_mux
 */
 
@@ -46,7 +43,6 @@ always_comb begin
   reg_wr_en = 'b0;        
   dat_wr_en = 'b0;
   pc_jmp_abs = 'b0;
-  pc_jmp_rel = 'b0;
   alu_sel_out = 'b0;      // to do i guess.
   reg_in_sel = 'b0;
   reg_alu_dat_sel = 'b0;
