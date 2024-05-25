@@ -1,0 +1,134 @@
+
+cmp
+[3 bit op] [3 bit reg] [3 bit reg]
+000
+
+
+mov
+[3 bit op] [3 bit reg] [3 bit reg]
+001
+
+
+add
+[5 bit op] [2 bit reg] [2 bit reg]
+01000
+
+
+sub
+[5 bit op] [2 bit reg] [2 bit reg]
+01001
+
+
+lsl
+[5 bit op] [2 bit reg] [2 bit reg]
+01010
+
+
+rol
+[5 bit op] [2 bit reg] [2 bit reg]
+01011
+
+
+and
+[5 bit op] [2 bit reg] [2 bit reg]
+01100
+
+
+or
+[5 bit op] [2 bit reg] [2 bit reg]
+01101
+
+
+xor
+[5 bit op] [2 bit reg] [2 bit reg]
+01110
+
+
+
+
+
+
+01111
+
+
+jge
+[5 bit op] [4 bit imm]
+10000
+
+
+jg
+[5 bit op] [4 bit imm]
+10001
+
+
+jmp
+[5 bit op] [4 bit imm]
+10010
+
+
+
+
+
+
+10011
+any
+inc
+[6 bit op] [3 bit reg]
+101000
+
+
+lsl
+[6 bit op] [3 bit reg]
+101001
+
+
+rol
+[6 bit op] [3 bit reg] 
+101010
+
+
+clr
+[6 bit op] [3 bit reg]
+101011
+
+
+not
+[6 bit op] [3 bit reg]
+101100
+
+
+ldr
+[6 bit op] [3 bit reg] 
+101101
+load from [reg0] to reg
+str
+[6 bit op] [3 bit reg]
+101110
+store from reg0 to [reg]
+
+
+
+
+101111
+any
+ldr
+[6 bit op] [3 bit imm]
+110000
+load from 64+imm to reg0
+str
+[6 bit op] [3 bit imm]
+110001
+store from reg0 to 64+imm
+
+
+
+
+11001
+11010
+11011
+11100
+11101
+11110
+11111
+free
+
