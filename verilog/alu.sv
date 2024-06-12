@@ -69,17 +69,6 @@ always_comb begin
       out_a_mux = inv_input_A;
   endcase
 
-/*
-  case({sel_b_mux, sel_gd_b_mux})
-    2'b00:
-      out_b_mux = input_B;
-    2'b01:
-      out_b_mux = 8'b0;
-    2'b10:
-      out_b_mux = inv_input_B;
-    2'b11:
-      out_b_mux = 8'b0;
-  endcase*/
   case(sel_gd_b_mux)
     1'b0:
       out_b_mux_pre = input_B;

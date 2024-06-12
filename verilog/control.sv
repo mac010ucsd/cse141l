@@ -1,20 +1,21 @@
 module control (
   input [8:0] instr,    // subset of machine code (any width you need)
   output logic sel_a_mux,
-  sel_b_mux,
-  sel_gd_b_mux,
-  sel_bit_mux,
-  sel_shift_mux,
-  shift_dir,
-  shift_mode,
-  reg_wr_en,
-  dat_wr_en,
-  pc_jmp_abs,
-  reg_in_sel,
-  dat_in_sel,
-  reg_alu_dat_sel,
-  output logic [2:0] alu_sel_out;
-)
+              sel_b_mux,
+              sel_gd_b_mux,
+              sel_bit_mux,
+              sel_shift_mux,
+              shift_dir,
+              shift_mode,
+              reg_wr_en,
+              dat_wr_en,
+              pc_jmp_abs,
+              reg_in_sel,
+              dat_in_sel,
+              reg_alu_dat_sel,
+              pc_jmp_en,
+  output logic [2:0] alu_sel_out
+);
 /*
 output sel_a_mux,
 sel_b_mux,
@@ -47,6 +48,7 @@ always_comb begin
   reg_in_sel = 'b0;
   reg_alu_dat_sel = 'b0;
   dat_in_sel = 'b0;
+  pc_jmp_en = 'b0;
 
   casez(instr[8:3])   // take 6 msb as opcode.
     'b000???: begin // cmp, same as subtract. (A - B)
@@ -103,12 +105,17 @@ always_comb begin
     end
     'b10000?: begin // jge TODO
       pc_jmp_abs = 1'b0;
+      pc_jmp_en = 1'b1;
     end
     'b10001?: begin // jg TODO
       pc_jmp_abs = 1'b0;
+      pc_jmp_en = 1'b1;
+
     end
     'b10010?: begin // jmp TODO
       pc_jmp_abs = 1'b0;
+      pc_jmp_en = 1'b1;
+
     end
     'b101000: begin // inc
       sel_bit_mux = 1'b1; // select 1 bit carry in
