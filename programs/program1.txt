@@ -171,6 +171,7 @@ ldi 2
 // max cmp sum
 cmp reg1 reg0
 jge if1_end
+
 sti 1
 Label if1_end
 
@@ -186,7 +187,7 @@ ldi 2
 // sum cmp min
 cmp reg0 reg1
 jge if2_end
-//
+
 sti 0
 Label if2_end
 

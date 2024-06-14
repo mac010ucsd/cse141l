@@ -16,7 +16,7 @@ for (i = 0; i < 15; i++) {
 	// [xx xx AA AA]
 	// [BB BB]
 
-	// assemblyh normal loop stuff
+	// assembly normal loop stuff
 	for (n = 0; n < 8; n++){
 		X = (B1 & 1) * A0; // bit mask lsb
 		X_t = X;

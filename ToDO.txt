@@ -1,0 +1,6 @@
+Things to do:
+1. Add Label handling to Assembler
+2. Finish LUT inside or outside PC with correct addresses
+3. Finish Jump instructions for Controller
+4. Debug architecture
+5. Start running program 1
