@@ -12,6 +12,7 @@ module top (
     logic pc_jmp_en;
     logic target;
     logic [9:0] pc;
+    logic[2:0] alu_flags;
 
     PC pc0 (.reset(reset), .clk(clock), .absjump_en(pc_jmp_abs),
             .jmp_en (pc_jmp_en),
@@ -38,7 +39,7 @@ module top (
         .sel_gd_b_mux(sel_gd_b_mux), .sel_bit_mux(sel_bit_mux), .sel_shift_mux(sel_shift_mux),
         .shift_dir(shfit_dir), .shift_mode(shift_mode), .reg_wr_en(reg_wr_en), .dat_wr_en(dat_wr_en),
         .pc_jmp_abs(pc_jmp_abs), .reg_in_sel(reg_in_sel), .dat_in_sel(dat_in_sel), 
-        .reg_alu_dat_sel(reg_alu_dat_sel), .alu_sel_out(alu_sel_out), .pc_jmp_en(pc_jmp_en));
+        .reg_alu_dat_sel(reg_alu_dat_sel), .alu_sel_out(alu_sel_out), .pc_jmp_en(pc_jmp_en), .alu_flags(alu_flags));
 
     logic [3:0] reg0, reg1;
     logic [7:0] imm;
@@ -54,7 +55,6 @@ module top (
         .datB_out(reg_datB_out));
 
     logic[7:0] alu_out;
-    logic[2:0] alu_flags;
 
     logic reg_A_out;
     assign reg_A_out = use_imm ? imm : reg_datA_out;
