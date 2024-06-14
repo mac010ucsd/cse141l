@@ -5,22 +5,23 @@ lsl reg0
 lsl reg0
 lsl reg0
 lsl reg0
-sti reg0 0
+sti 0
 
 //max = 0
 clr reg0
-sti reg0 1
+sti 1
 
 //sum = 0
 clr reg0
-sti reg0 2
+sti 2
 
 // val = 0
 clr reg0
-sti reg0 3
+sti 3
 
 //int i = 0
 clr reg4
+Label i_start
 
 // i < 31
 clr reg0
@@ -32,7 +33,173 @@ cmp reg4 reg0
 jge i_end
 // for (i = 0; i < 31; i ++)
 
-// int j = 0;
+// int j = i+1;
+mov reg4 reg5
+inc reg5
+
+Label j_start
+
+// j < 32
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+cmp reg5 reg0
+jge j_end
+// for (j =0; j < 32; j++)
+
+// val = data[2*i] ^ data[2*j]
+// data[2*i]
+mov reg4 reg0
+lsl reg0
+ldr reg0
+mov reg0 reg1
+
+// data[2*j]
+mov reg5 reg0
+lsl reg0
+ldr reg0
+xor reg0 reg1
+
+// val = 
+sti 3
+
+// k = 0
+clr reg6
+// 8
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+
+// k < 8
+cmp reg6 reg0
+jge k1_end
+// for (int k = 0; k < 8; k ++)
+
+// 1
+clr reg1
+inc reg1
+
+// val & 1
+ldi 3
+and reg1 reg0
+
+// sum +=
+ldi 2
+add reg0 reg1
+sti 2
+
+//val >> 1
+ldi 3
+lsr reg0
+sti 3
+
+// k += 1
+inc reg6
+jmp k1_start 
+
+// data[2*i+1]
+mov reg4 reg0
+lsl reg0
+inc reg0
+ldr reg0
+mov reg0 reg1
+
+// data[2*j+1]
+mov reg5 reg0
+lsl reg0
+inc reg0
+ldr reg0
+xor reg0 reg1
+
+//val = 
+sti 3
+
+// k = 0
+clr reg6
+// 8
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+
+// k < 8
+cmp reg6 reg0
+jge k2_end
+// for (int k = 0; k < 8; k ++)
+
+// 1
+clr reg1
+inc reg1
+
+// val & 1
+ldi 3
+and reg1 reg0
+
+// sum +=
+ldi 2
+add reg0 reg1
+sti 2
+
+//val >> 1
+ldi 3
+lsr reg0
+sti 3
+
+// k += 1
+inc reg6
+jmp k2_start
+
+//if (sum > max) { max = sum;}
+// reg1 = max
+ldi 1
+mov reg0 reg1
+
+// reg0 = sum
+ldi 2
+
+// max cmp sum
+cmp reg1 reg0
+jge if1_end
+sti 1
+Label if1_end
+
+//if (sum < min) { min = sum;}
+
+//reg1 = min
+ldi 0
+mov reg0 reg1
+
+//reg0 = sum
+ldi 2
+
+// sum cmp min
+cmp reg0 reg1
+jge if2_end
+//
+sti 0
+Label if2_end
+
+// j++
+inc reg5
+jmp j_start
+Label j_end
+// i++
+inc reg4
+jmp i_start
+Label i_end
+
+
+
+
+
+
 
 
 
