@@ -1,6 +1,11 @@
 Things to do:
 1. Add Label handling to Assembler
 2. Finish LUT inside or outside PC with correct addresses
-3. Finish Jump instructions for Controller
+3. Finish Jump instructions for Controller (did a little bit of this but unsure if works)
 4. Debug architecture
 5. Start running program 1
+
+- add logical shift right (LSR) command
+- add exit command
+- add no op (optional depending on how stuff implemented)
+- check operand order is correct for some instructions
