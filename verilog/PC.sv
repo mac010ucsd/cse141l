@@ -11,6 +11,7 @@ module PC #(parameter D=10)(
   output logic[D-1:0] prog_ctr
 );
 
+
   always_ff @(posedge clk) begin
     if(reset)
 	    prog_ctr <= 'b0;

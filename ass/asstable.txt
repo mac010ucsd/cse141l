@@ -111,11 +111,11 @@ store from reg0 to [reg]
 
 101111
 any
-ldr
+ldi
 [6 bit op] [3 bit imm]
 110000
 load from 64+imm to reg0
-str
+sti
 [6 bit op] [3 bit imm]
 110001
 store from reg0 to 64+imm

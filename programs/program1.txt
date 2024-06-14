@@ -1,0 +1,38 @@
+//min = 16
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+sti reg0 0
+
+//max = 0
+clr reg0
+sti reg0 1
+
+//sum = 0
+clr reg0
+sti reg0 2
+
+// val = 0
+clr reg0
+sti reg0 3
+
+//int i = 0
+clr reg4
+
+// i < 31
+clr reg0
+not reg0
+lsr reg0
+lsr reg0
+lsr reg0
+cmp reg4 reg0
+jge i_end
+// for (i = 0; i < 31; i ++)
+
+// int j = 0;
+
+
+
