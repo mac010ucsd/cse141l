@@ -1,5 +1,6 @@
 module control (
   input [8:0] instr,    // subset of machine code (any width you need)
+  input [2:0] alu_flags,
   output logic sel_a_mux,
               sel_b_mux,
               sel_gd_b_mux,
@@ -49,7 +50,7 @@ always_comb begin
   reg_alu_dat_sel = 'b0;
   dat_in_sel = 'b0;
   pc_jmp_en = 'b0;
-
+  
   casez(instr[8:3])   // take 6 msb as opcode.
     'b000???: begin // cmp, same as subtract. (A - B)
       sel_a_mux = 1'b0;
@@ -67,12 +68,14 @@ always_comb begin
       sel_b_mux = 1'b0;
       sel_bit_mux = 1'b0;
       alu_sel_out = 3'b100;
+      reg_wr_en = 1'b1;
     end
     'b01001?: begin // sub
       sel_a_mux = 1'b0;
       sel_b_mux = 1'b1; // invert for sub
       sel_bit_mux = 1'b1;
       alu_sel_out = 3'b100;
+      reg_wr_en = 1'b1;
     end
     'b01010?: begin // lsl 2r 2r
       sel_a_mux = 1'b0;
@@ -80,6 +83,7 @@ always_comb begin
       shift_dir = 'b0;
       shift_mode = 'b0;
       alu_sel_out = 3'b101;
+      reg_wr_en = 1'b1;
     end
     'b01011?: begin // rol 2r 2r
       sel_a_mux = 1'b0;
@@ -87,30 +91,56 @@ always_comb begin
       shift_dir = 'b0;
       shift_mode = 'b1;
       alu_sel_out = 3'b101;
+      reg_wr_en = 1'b1;
     end
     'b01100?: begin // and
       sel_a_mux = 1'b0;
       sel_b_mux = 1'b0;
       alu_sel_out = 3'b001;
+      reg_wr_en = 1'b1;
     end
     'b01101?: begin // or
       sel_a_mux = 1'b0;
       sel_b_mux = 1'b0;
       alu_sel_out = 3'b010;
+      reg_wr_en = 1'b1;
     end
     'b01110?: begin // xor
       sel_a_mux = 1'b0;
       sel_b_mux = 1'b0;
       alu_sel_out = 3'b011;
+      reg_wr_en = 1'b1;
     end
     'b10000?: begin // jge TODO
+      // flags = {cflag, nflag, zflag};
+      // JAE = JG -> CF
+      // basic understanding:
+      // if A is greater than or equal to B,
+      // when A - B (both positive but A >= B):
+      // result is > 0
+      // then carry flag not invoked
+      // so look for carry flag == 0
+      // jmp_flag_reqs = 
+
       pc_jmp_abs = 1'b0;
-      pc_jmp_en = 1'b1;
+      // pc_jmp_en = 1'b1;
+      pc_jmp_en = !alu_flags[2];
     end
     'b10001?: begin // jg TODO
+      // JA = JG -> CF, ZF
+      // basic understanding:
+      // if A is greater than or equal to B,
+      // when A - B (both positive but A >= B):
+      // result is > 0
+      // then carry flag not invoked
+      // so look for carry flag == 0
+      // if zero flag == 0 then it is equal. we don't want that
+      // then look for zero flag == 1
+      // look for CF = 0, ZF = 1
       pc_jmp_abs = 1'b0;
-      pc_jmp_en = 1'b1;
-
+      // pc_jmp_en = 1'b1;
+      // flags = {cflag, nflag, zflag};
+      pc_jmp_en = !alu_flags[2] & alu_flags[0];
     end
     'b10010?: begin // jmp TODO
       pc_jmp_abs = 1'b0;
@@ -121,6 +151,7 @@ always_comb begin
       sel_bit_mux = 1'b1; // select 1 bit carry in
       sel_gd_b_mux = 1'b1; // select gd as B
       alu_sel_out = 3'b100; // add out select
+      reg_wr_en = 1'b1;
     end
     'b101001: begin // lsl 
       sel_a_mux = 1'b0;
@@ -129,6 +160,7 @@ always_comb begin
       shift_dir = 'b0;
       shift_mode = 'b0;
       alu_sel_out = 3'b101;
+      reg_wr_en = 1'b1;
     end
     'b101010: begin // rol 
       sel_a_mux = 1'b0;
@@ -137,15 +169,18 @@ always_comb begin
       shift_dir = 'b0;
       shift_mode = 'b1;
       alu_sel_out = 3'b101;
+      reg_wr_en = 1'b1;
     end
     'b101011: begin // clr 
       sel_a_mux = 1'b0;
       sel_gd_b_mux = 1'b1; // gnd as B
       alu_sel_out = 3'b001; // A & 0
+      reg_wr_en = 1'b1;
     end
     'b101100: begin // not 
       sel_a_mux = 1'b1; // ~A
       alu_sel_out = 3'b110; // ~A
+      reg_wr_en = 1'b1;
     end
     'b101101: begin // ldr 
       reg_wr_en = 1'b1;
