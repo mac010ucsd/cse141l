@@ -9,4 +9,6 @@ Things to do:
 - add logical shift right (LSR) command
 - add done command (add done command)
 - add no op (optional depending on how stuff implemented) DONE
-- check operand order is correct for some instructions
+- check operand order is correct for some instructions. Mov reg4 reg5 move Register 4 into register 5
+- maybe redo alu?
+- 
