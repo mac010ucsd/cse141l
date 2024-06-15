@@ -19,10 +19,10 @@ for (i = 0; i < 31; i++) {
 			}
 		}
 
-		if carry flag is set, flip and add 1 to get value.
-		if carry flag is not set, val MS bit will determine sign.
-			if val MS bit == 1, flip and add 1 to get value
-			if val MS bit == 0, do nothing.
+		// if carry flag is set, flip and add 1 to get value.
+		// if carry flag is not set, val MS bit will determine sign.
+		// 	if val MS bit == 1, flip and add 1 to get value
+		// 	if val MS bit == 0, do nothing.
 		
 		if (val > max | val == max & val2 > max2) {
 			max = val;

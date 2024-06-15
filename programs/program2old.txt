@@ -1,0 +1,93 @@
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+//min = 0xFF; 2
+sti 2
+//min2 = 0xFF; 3
+sti 3
+
+clr reg0
+//max = 0; 4
+sti 4
+//max2 = 0; 5
+sti 5
+//val = 0; 0
+sti 0
+//val2 = 0; 1
+sti 1
+
+// i = 0
+clr reg4
+
+Label i_start
+
+// i < 31
+clr reg0
+not reg0
+lsr reg0
+lsr reg0
+lsr reg0
+cmp reg4 reg0
+jge i_end
+//for (i = 0; i < 31; i++)
+
+// j = i+1
+clr reg5
+mov reg4 reg5
+
+Label j_start
+ 
+// j < 32
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+cmp reg5 reg0
+jge j_end
+
+//data[2 * i+1]
+mov reg4 reg0
+lsl reg0
+inc reg0
+ldr reg0
+mov reg0 reg1
+//!data[2 * j+1]
+mov reg5 reg0
+lsl reg0
+inc reg0
+ldr reg0
+not reg0
+// data[2 * i+1] + !data[2 * j+1]
+add reg0 reg1
+// + 1
+inc reg0
+//val2 =
+sti 1
+
+//data[2 * i]
+mov reg4 reg0
+lsl reg0
+ldr reg0
+mov reg0 reg1
+
+//!data[2 * j]
+mov reg5 reg0
+lsl reg0
+ldr reg0
+not reg0
+
+//data[2 * i] + !data[2 * j]
+add reg0 reg1
+// + CF
+add reg0 reg7
+//val =
+sti 0
+
+
+

@@ -21,7 +21,7 @@ always_comb case(LutPointer)
     12: absaddress = 1;
     13: absaddress = 1;
     14: absaddress = 1;
-
+    
     // Program 3
     15: absaddress = 1;
 

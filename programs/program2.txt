@@ -1,93 +1,157 @@
-clr reg0
-inc reg0
-lsl reg0
-lsl reg0
-lsl reg0
-lsl reg0
-//min = 0xFF; 2
-sti 2
-//min2 = 0xFF; 3
-sti 3
-
-clr reg0
-//max = 0; 4
-sti 4
-//max2 = 0; 5
-sti 5
-//val = 0; 0
-sti 0
-//val2 = 0; 1
-sti 1
-
-// i = 0
-clr reg4
-
-Label i_start
-
-// i < 31
+//uint8 min_diff_high = 0xFF; 2
 clr reg0
 not reg0
-lsr reg0
-lsr reg0
-lsr reg0
-cmp reg4 reg0
-jge i_end
-//for (i = 0; i < 31; i++)
-
-// j = i+1
-clr reg5
-mov reg4 reg5
-
-Label j_start
- 
-// j < 32
+sti 2
+//uint8 min_diff_low = 0xFF; 3
+sti 3
+//uint8 max_diff_high = 0; 4
 clr reg0
-inc reg0
-lsl reg0
-lsl reg0
-lsl reg0
-lsl reg0
-lsl reg0
+sti 4
+//uint8 max_diff_low = 0; 5
+sti 5
+
+//int i = 0; reg4
+clr reg4
+Label i_start
+
+// i < 63 8'b00111111
+clr reg0
+lsr reg0
+lsr reg0
+cmp reg4 reg0 
+jge i_end
+// for (uint8 i = 0; i < 63; i += 2)
+
+// int j = i + 2; reg5
+mov reg4 reg5
+inc reg5
+inc reg5
+Label j_start
+
+// j < 63
+clr reg0
+lsr reg0
+lsr reg0
 cmp reg5 reg0
 jge j_end
 
-//data[2 * i+1]
-mov reg4 reg0
-lsl reg0
-inc reg0
-ldr reg0
-mov reg0 reg1
-//!data[2 * j+1]
-mov reg5 reg0
-lsl reg0
-inc reg0
-ldr reg0
-not reg0
-// data[2 * i+1] + !data[2 * j+1]
-add reg0 reg1
-// + 1
-inc reg0
-//val2 =
-sti 1
-
-//data[2 * i]
-mov reg4 reg0
-lsl reg0
-ldr reg0
+// uint8 val1_high = mem[i]; reg1
+ldr reg4
 mov reg0 reg1
 
-//!data[2 * j]
-mov reg5 reg0
-lsl reg0
+// uint8 val1_low = mem[i + 1]; reg2
+mov reg4 reg0
+inc reg0
 ldr reg0
-not reg0
+mov reg0 reg2
 
-//data[2 * i] + !data[2 * j]
-add reg0 reg1
-// + CF
-add reg0 reg7
-//val =
-sti 0
+// uint8 val2_high = mem[j]; reg3
+ldr reg5
+mov reg5 reg3
 
+// uint8 val2_low = mem[j + 1]; reg6
+mov reg5 reg0
+inc reg0
+ldr reg0
+mov reg0 reg6
 
+//Compare val1 and val2 to calculate diff
+// Compare high bytes of val1 and val2
+cmp reg1 reg2
+jg val1_bigger
+cmp reg3 reg1
+jg val2_bigger
+// if high bits are equal, then compare lower bits
+cmp reg2 reg6
+jge val1_bigger
+cmp reg6 reg2
+jg val2_bigger
 
+// if val2 is bigger, then we flip to val2-val1
+Label val2_bigger
+// val2_low - val1_low
+mov reg6 reg0
+sub reg0 reg2
+mov reg0 reg6
+// val2_high - CF
+mov reg7 reg0
+sub reg3 reg0
+// val2_high - val1_high
+sub reg3 reg1
+// high bit in reg3, low bit in reg6
+mov reg3 reg1
+mov reg6 reg2
+// high bit in reg1, low bit in reg2
+jmp compare_diff
+
+// if val1 is bigger, we do normal stuff val1-val2
+Label val1_bigger
+//val1_low - val2_low
+mov reg6 reg0
+sub reg2 reg0
+//val1_high - CF
+mov reg7 reg0
+sub reg1 reg0
+//val1_high - val2_high
+sub reg1 reg3
+// high bit in reg1, low bit in reg2
+
+Label compare_diff
+// If (diff > max_diff)
+// reg3 = max_diff high 
+ldi 4
+mov reg0 reg3
+// reg0 = max_diff low
+ldi 5
+// compare high bit of diff and max diff
+cmp reg1 reg3
+jg diff_bigger
+cmp reg3 reg1
+jg maxd_bigger
+// if high bits equals, compare low bits
+cmp reg2 reg0
+jg diff_bigger
+cmp reg0 reg2
+jge maxd_bigger
+
+Label diff_bigger
+//max_diff = diff;
+mov reg1 reg0
+sti 4
+mov reg2 reg0
+sti 5
+
+Label maxd_bigger
+// If (min_diff > diff)
+// reg3 = min_diff high
+ldi 2
+mov reg0 reg3
+// reg0 = min_diff low
+ldi 3
+// compare high bit of min diff and diff
+cmp reg3 reg1 // cmp min_diff_high diff_high
+jg mind_bigger
+cmp reg1 reg3 // cmp diff_high min_diff_high
+jg diff1_bigger
+// if high bits equals, compare low bits
+cmp reg2 reg0 // cmp diff_low min_diff_low
+jge diff1_bigger
+cmp reg0 reg2 // cmp min_diff_low diff_low
+jg mind_bigger
+
+Label mind_bigger
+// Min_diff = diff;
+mov reg1 reg0
+sti 2
+move reg2 reg0
+sti 3
+
+Label diff1_bigger
+
+inc reg5
+jmp j_start
+Label j_end
+inc reg4
+jmp i_start
+Label i_end
+done
