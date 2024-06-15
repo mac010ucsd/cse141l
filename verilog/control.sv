@@ -151,6 +151,7 @@ always_comb begin
       pc_jmp_en = 1'b1;
       LutPointer = instr[3:0];
     end
+
     'b101000: begin // inc
       sel_bit_mux = 1'b1; // select 1 bit carry in
       sel_gd_b_mux = 1'b1; // select gd as B
@@ -194,14 +195,20 @@ always_comb begin
       dat_wr_en = 1'b1;
       dat_in_sel = 1'b1;  // select data from re g file to go into dat_in
     end
-    'b110000: begin // ldr 
+    'b110000: begin // ldi
       reg_wr_en = 1'b1;
       reg_alu_dat_sel = 1'b1; // data from dat mem into reg dat in. 
     end
-    'b110001: begin // str 
+    'b110001: begin // sti 
       dat_wr_en = 1'b1;
       dat_in_sel = 1'b1;  // select data from re g file to go into dat_in
     end
+    'b110010: begin // lsr
+    
+    end
+    default: begin
+            // nop
+        end
   endcase
 
 end
