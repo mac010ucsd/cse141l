@@ -7,6 +7,12 @@ module top (
     output  done
 );
 
+    logic[9:0] absaddress;
+    logic[3:0] LutPointer;
+
+
+    LUT lut0(.LutPointer(LutPointer), .absaddress(absaddress));
+
     logic reset;
     logic pc_jmp_abs;
     logic pc_jmp_en;
@@ -16,7 +22,7 @@ module top (
 
     PC pc0 (.reset(reset), .clk(clock), .absjump_en(pc_jmp_abs),
             .jmp_en (pc_jmp_en),
-            .target(target), .prog_ctr(pc));
+            .target(target), .prog_ctr(pc), .absaddress(absaddress));
 
     logic [8:0] inst;
     instr_ROM inst_mem0 (.prog_ctr(pc), .mach_code(inst));
@@ -39,7 +45,7 @@ module top (
         .sel_gd_b_mux(sel_gd_b_mux), .sel_bit_mux(sel_bit_mux), .sel_shift_mux(sel_shift_mux),
         .shift_dir(shfit_dir), .shift_mode(shift_mode), .reg_wr_en(reg_wr_en), .dat_wr_en(dat_wr_en),
         .pc_jmp_abs(pc_jmp_abs), .reg_in_sel(reg_in_sel), .dat_in_sel(dat_in_sel), 
-        .reg_alu_dat_sel(reg_alu_dat_sel), .alu_sel_out(alu_sel_out), .pc_jmp_en(pc_jmp_en), .alu_flags(alu_flags));
+        .reg_alu_dat_sel(reg_alu_dat_sel), .alu_sel_out(alu_sel_out), .pc_jmp_en(pc_jmp_en), .alu_flags(alu_flags), .LutPointer(LutPointer));
 
     logic [3:0] reg0, reg1;
     logic [7:0] imm;

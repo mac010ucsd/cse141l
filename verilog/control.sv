@@ -15,7 +15,8 @@ module control (
               dat_in_sel,
               reg_alu_dat_sel,
               pc_jmp_en,
-  output logic [2:0] alu_sel_out
+  output logic [2:0] alu_sel_out,
+  output logic [3:0] LutPointer
 );
 /*
 output sel_a_mux,
@@ -50,6 +51,7 @@ always_comb begin
   reg_alu_dat_sel = 'b0;
   dat_in_sel = 'b0;
   pc_jmp_en = 'b0;
+  LutPointer = 'b0;
   
   casez(instr[8:3])   // take 6 msb as opcode.
     'b000???: begin // cmp, same as subtract. (A - B)
@@ -125,6 +127,7 @@ always_comb begin
       pc_jmp_abs = 1'b0;
       // pc_jmp_en = 1'b1;
       pc_jmp_en = !alu_flags[2];
+      LutPointer = instr[3:0];
     end
     'b10001?: begin // jg TODO
       // JA = JG -> CF, ZF
@@ -141,11 +144,12 @@ always_comb begin
       // pc_jmp_en = 1'b1;
       // flags = {cflag, nflag, zflag};
       pc_jmp_en = !alu_flags[2] & alu_flags[0];
+      LutPointer = instr[3:0];
     end
     'b10010?: begin // jmp TODO
       pc_jmp_abs = 1'b0;
       pc_jmp_en = 1'b1;
-
+      LutPointer = instr[3:0];
     end
     'b101000: begin // inc
       sel_bit_mux = 1'b1; // select 1 bit carry in

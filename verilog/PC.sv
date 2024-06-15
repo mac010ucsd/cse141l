@@ -8,6 +8,7 @@ module PC #(parameter D=10)(
         absjump_en,				// abs. jump enable
         jmp_en,
   input       [D-1:0] target,	// how far/where to jump
+  input       [D-1:0] absaddress,
   output logic[D-1:0] prog_ctr
 );
 
@@ -18,7 +19,7 @@ module PC #(parameter D=10)(
     // else if(reljump_en)
       // prog_ctr <= prog_ctr + target;
     else if(jmp_en && absjump_en)
-	    prog_ctr <= target;
+	    prog_ctr <= absaddress;
     else if(jmp_en)
       prog_ctr <= prog_ctr + target;
     else
