@@ -58,11 +58,12 @@ for i in assfile:
     if len(p) == 2 and len(p[1].split()) == 2:
         # then it is a label
         jmp_book[cnt] = p[1].split()[1] 
+        cnt += 1
+
     
     i = p[0].strip()
     #print(i)
     assfile_clean.append(i)
-    cnt += 1
     
 assfile = assfile_clean
 
@@ -85,7 +86,8 @@ for i in assfile:
     if len(i) > 1:
         t = int(i[1]) if str(i[1]).isdigit() else (int(str(i[1]).replace("reg", "")) if "reg" in str(i[1]) else jmp_decode[str(i[1])])
         # print(t, f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1])
-        # print (opcode_bible[i[0]][len(i)]["op_code"], f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1], t, opcode_bible[i[0]][len(i)])
+        print(i)
+        print (i[0], opcode_bible[i[0]][len(i)]["op_code"], f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1], t, opcode_bible[i[0]][len(i)])
         outline += f"{t:09b}"[9 - opcode_bible[i[0]][len(i)]["op_1"]:] # + " "
     if len(i) > 2:
         t = int(i[2]) if "reg" not in i[2] else int(str(i[2]).replace("reg", ""))
