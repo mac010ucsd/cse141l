@@ -202,6 +202,9 @@ always_comb begin
       dat_wr_en = 1'b1;
       dat_in_sel = 1'b1;  // select data from re g file to go into dat_in
     end
+    default: begin
+            // nop
+        end
   endcase
 
 end
