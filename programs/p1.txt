@@ -12,8 +12,7 @@ sti 2
 clr reg0
 sti 3
 clr reg4
-Label i_start
-clr reg0
+clr reg0 //Label i_start
 not reg0
 lsr reg0
 lsr reg0
@@ -22,8 +21,7 @@ cmp reg4 reg0
 jge i_end
 mov reg4 reg5
 inc reg5
-Label j_start
-clr reg0
+clr reg0 //Label j_start
 inc reg0
 lsl reg0
 lsl reg0
@@ -100,20 +98,17 @@ ldi 2
 cmp reg1 reg0
 jge if1_end
 sti 1
-Label if1_end
-ldi 0
+ldi 0    //Label if1_end
 mov reg0 reg1
 ldi 2
 cmp reg0 reg1
 jge if2_end
 sti 0
-Label if2_end
-inc reg5
+inc reg5  //Label if2_end
 jmp j_start
-Label j_end
-inc reg4
+inc reg4 //Label j_end
 jmp i_start
-Label i_end
+clr reg0 //Label i_end 
 
 
 
