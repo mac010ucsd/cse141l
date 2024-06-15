@@ -25,8 +25,8 @@ always_comb begin
   case(alu_op)
     'b0001: // add
       {cflag, out} = input_A + input_B; 
-    'b0010:
-      {cflag, out} = input_A - input_B;
+    'b0010: // sub
+      {cflag, out} = input_A - input_B; // this is signed
     'b0011: // lsl
       out = input_A << input_B;
     'b0100: // lsr
