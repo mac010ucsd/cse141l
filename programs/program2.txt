@@ -108,14 +108,14 @@ mov reg0 reg3
 ldi 5
 // compare high bit of diff and max diff
 cmp reg1 reg3
-jg diff_bigger
+jgm diff_bigger
 cmp reg3 reg1
-jg maxd_bigger
+jgm maxd_bigger
 // if high bits equals, compare low bits
 cmp reg2 reg0
-jg diff_bigger
+jgm diff_bigger
 cmp reg0 reg2
-jge maxd_bigger
+jgm maxd_bigger
 
 Label diff_bigger
 //max_diff = diff;
@@ -133,14 +133,14 @@ mov reg0 reg3
 ldi 3
 // compare high bit of min diff and diff
 cmp reg3 reg1 // cmp min_diff_high diff_high
-jg mind_bigger
+jgm mind_bigger
 cmp reg1 reg3 // cmp diff_high min_diff_high
-jg diff1_bigger
+jgm diff1_bigger
 // if high bits equals, compare low bits
 cmp reg2 reg0 // cmp diff_low min_diff_low
-jge diff1_bigger
+jgm diff1_bigger
 cmp reg0 reg2 // cmp min_diff_low diff_low
-jg mind_bigger
+jgm mind_bigger
 
 Label mind_bigger
 // Min_diff = diff;

@@ -59,13 +59,13 @@ ldi 4         //Label compare_diff
 mov reg0 reg3
 ldi 5
 cmp reg1 reg3
-jg diff_bigger
+jgm diff_bigger
 cmp reg3 reg1
-jg maxd_bigger
+jgm maxd_bigger
 cmp reg2 reg0
-jg diff_bigger
+jgm diff_bigger
 cmp reg0 reg2
-jge maxd_bigger
+jgm maxd_bigger
 mov reg1 reg0 //Label diff_bigger
 sti 4
 mov reg2 reg0
@@ -74,13 +74,13 @@ ldi 2         //Label maxd_bigger
 mov reg0 reg3
 ldi 3
 cmp reg3 reg1
-jg mind_bigger
+jgm mind_bigger
 cmp reg1 reg3
-jg diff1_bigger
+jgm diff1_bigger
 cmp reg2 reg0
-jge diff1_bigger
+jgm diff1_bigger
 cmp reg0 reg2
-jg mind_bigger
+jgm mind_bigger
 mov reg1 reg0 //Label mind_bigger
 sti 2
 move reg2 reg0
