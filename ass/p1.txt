@@ -109,12 +109,3 @@ jmp j_start
 inc reg4 //Label j_end
 jmp i_start
 done //Label i_end
-
-
-
-
-
-
-
-
-

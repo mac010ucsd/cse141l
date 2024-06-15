@@ -96,21 +96,20 @@ not
 [6 bit op] [3 bit reg]
 101100
 
+lsr
+[6 bit op] [3 bit reg]
+101101
+lsr on a 3 bit reg
 
 ldr
 [6 bit op] [3 bit reg] 
-101101
+101110
 load from [reg0] to reg
 str
 [6 bit op] [3 bit reg]
-101110
+101111
 store from reg0 to [reg]
 
-
-
-
-101111
-any
 ldi
 [6 bit op] [3 bit imm]
 110000
@@ -121,6 +120,9 @@ sti
 store from reg0 to 64+imm
 
 
+done
+[9 bit op]
+111111111
 
 
 11001
