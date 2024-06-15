@@ -81,7 +81,7 @@ for i in assfile:
     # print(i[0][len(i)])
     outline = ""
     outline += opcode_bible[i[0]][len(i)]["op_code"] # + " "
-    print(outline)
+    # print(outline)
     if len(i) > 1:
         t = int(i[1]) if str(i[1]).isdigit() else (int(str(i[1]).replace("reg", "")) if "reg" in str(i[1]) else jmp_decode[str(i[1])])
         print(t)
