@@ -8,7 +8,7 @@ outfile = ""
 with open("asstable.txt", "r") as t:
     f = t.read()
 
-with open("assfile.txt", "r") as t:
+with open("p1.txt", "r") as t:
     assfile = t.read()
 
 ins_name = []
@@ -38,13 +38,16 @@ for i in range(len(ins_name)):
 
 # f"{z:b}"
 assfile = assfile.strip()
-assfile = assfile.replace("\n\n", "\n")
+oldfile = assfile
+while (oldfile != assfile):
+    oldfile = assfile
+    assfile = assfile.replace("\n\n", "\n")
 assfile = assfile.split("\n")
 
 outfile = ""
 for i in assfile:
     print(i)
-    i = i.strip().split()
+    i = i.split("//")[0].strip().split()
     print(i)
     # print(i[0][len(i)])
     outline = ""

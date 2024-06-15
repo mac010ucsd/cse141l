@@ -24,14 +24,6 @@ always_comb case(LutPointer)
 
     // Program 3
     15: absaddress = 1;
-    16: absaddress = 1;
-    17: absaddress = 1;
-    18: absaddress = 1;
-    19: absaddress = 1;
-    20: absaddress = 1;
-    21: absaddress = 1;
-    22: absaddress = 1;
-	
 
 	default: absaddress = 'b0;
 endcase

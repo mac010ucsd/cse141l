@@ -1,0 +1,120 @@
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+sti 0
+clr reg0
+sti 1
+clr reg0
+sti 2
+clr reg0
+sti 3
+clr reg4
+clr reg0 //Label i_start
+not reg0
+lsr reg0
+lsr reg0
+lsr reg0
+cmp reg4 reg0
+jge i_end
+mov reg4 reg5
+inc reg5
+clr reg0 //Label j_start
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+cmp reg5 reg0
+jge j_end
+clr reg0
+sti 2
+mov reg4 reg0
+lsl reg0
+ldr reg0
+mov reg0 reg1
+mov reg5 reg0
+lsl reg0
+ldr reg0
+xor reg0 reg1
+sti 3
+clr reg6
+clr reg0 //Label k1_start
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+cmp reg6 reg0
+jge k1_end
+clr reg1
+inc reg1
+ldi 3
+and reg1 reg0
+ldi 2
+add reg0 reg1
+sti 2
+ldi 3
+lsr reg0
+sti 3
+inc reg6
+jmp k1_start
+mov reg4 reg0 //Label k1_end
+lsl reg0
+inc reg0
+ldr reg0
+mov reg0 reg1
+mov reg5 reg0
+lsl reg0
+inc reg0
+ldr reg0
+xor reg0 reg1
+sti 3
+clr reg6
+clr reg0 //Label k2_start
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+cmp reg6 reg0
+jge k2_end
+clr reg1
+inc reg1
+ldi 3
+and reg1 reg0
+ldi 2
+add reg0 reg1
+sti 2
+ldi 3
+lsr reg0
+sti 3
+inc reg6
+jmp k2_start
+ldi 1 //Label k2_end
+mov reg0 reg1
+ldi 2
+cmp reg1 reg0
+jge if1_end
+sti 1
+ldi 0 //Label if1_end
+mov reg0 reg1
+ldi 2
+cmp reg0 reg1
+jge if2_end
+sti 0
+inc reg5 //Label if2_end
+jmp j_start
+inc reg4 //Label j_end
+jmp i_start
+done //Label i_end
+
+
+
+
+
+
+
+
+

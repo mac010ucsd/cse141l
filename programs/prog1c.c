@@ -6,8 +6,6 @@ int val = 0;
 for (int i = 0; i < 31; i++) {
     for (int j = i+1; j < 32; j++) {
         //clear sum
-    
-        //clear val
         val = data[2 * i] ^ data[2 * j];
         for (k = 0; k < 8; k++){ // count number of 1s
 			sum += val & 1; // check smallest bit to see if it's 1

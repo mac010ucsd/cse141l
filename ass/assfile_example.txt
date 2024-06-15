@@ -5,4 +5,4 @@ mov reg2 reg0
 lsl reg1
 ldr reg0
 xor reg0 reg1
-ldr 6
+ldi 6

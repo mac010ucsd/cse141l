@@ -124,12 +124,12 @@ always_comb begin
       // so look for carry flag == 0
       // jmp_flag_reqs = 
 
-      pc_jmp_abs = 1'b0;
+      pc_jmp_abs = 1'b1;
       // pc_jmp_en = 1'b1;
       pc_jmp_en = !alu_flags[2];
       LutPointer = instr[3:0];
     end
-    'b10001?: begin // jg TODO
+    'b10001?: begin // jg
       // JA = JG -> CF, ZF
       // basic understanding:
       // if A is greater than or equal to B,
@@ -140,14 +140,14 @@ always_comb begin
       // if zero flag == 0 then it is equal. we don't want that
       // then look for zero flag == 1
       // look for CF = 0, ZF = 1
-      pc_jmp_abs = 1'b0;
+      pc_jmp_abs = 1'b1;
       // pc_jmp_en = 1'b1;
       // flags = {cflag, nflag, zflag};
       pc_jmp_en = !alu_flags[2] & alu_flags[0];
       LutPointer = instr[3:0];
     end
-    'b10010?: begin // jmp TODO
-      pc_jmp_abs = 1'b0;
+    'b10010?: begin // jmp
+      pc_jmp_abs = 1'b1;
       pc_jmp_en = 1'b1;
       LutPointer = instr[3:0];
     end
@@ -206,9 +206,6 @@ always_comb begin
     'b110010: begin // lsr
     
     end
-    default: begin
-            // nop
-        end
   endcase
 
 end

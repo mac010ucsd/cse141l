@@ -161,7 +161,6 @@ for (i = 0; i < 31; i++) {
 				val2 = !val2 + 1;
 				val = !val + CF;
 			}
-			.
 		}
 
 		if carry flag is set, flip and add 1 to get value.
