@@ -71,7 +71,7 @@ always_comb begin
       alu_op = 'b1001;
       reg_wr_en = 1'b1;
     end // 'b011111
-    'b10000?: begin // jge TODO
+    'b10000?: begin // jge
       // flags = {cflag, nflag, zflag};
       // JAE = JG -> CF
       // basic understanding:
@@ -157,5 +157,5 @@ always_comb begin
   endcase
 
 end
-	
+
 endmodule
