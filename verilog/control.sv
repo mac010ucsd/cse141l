@@ -85,7 +85,7 @@ always_comb begin
       // jmp_flag_reqs = 
 
       // pc_jmp_en = 1'b1;
-      pc_jmp_en = !alu_flags[2];
+      pc_jmp_en = (!alu_flags[1] | alu_flags[0]); // jump by signed
       LutPointer = instr[3:0];
     end
     'b10001?: begin // jg
@@ -101,15 +101,15 @@ always_comb begin
       // look for CF = 0, ZF = 1
       // pc_jmp_en = 1'b1;
       // flags = {cflag, nflag, zflag};
-      pc_jmp_en = !alu_flags[2] & alu_flags[0];
+      pc_jmp_en = (!alu_flags[1] & !alu_flags[0]); // !C & 0
       LutPointer = instr[3:0];
     end
     'b10010?: begin // jmp
       pc_jmp_en = 1'b1;
       LutPointer = instr[3:0];
     end
-    'b10011?: begin // jgm
-      pc_jmp_en = (!alu_flags[2] | alu_flags[0]); // !C | Z from ECE 108 slides
+    'b10011?: begin // jgm jump by magnitude look for carry flag
+      pc_jmp_en = (!alu_flags[2] & !alu_flags[0]); // !C | Z
       LutPointer = instr[3:0];
     end
     'b101000: begin // inc
