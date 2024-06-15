@@ -73,6 +73,7 @@ sti 3
 
 // k = 0
 clr reg6
+Label k1_start
 // 8
 clr reg0
 inc reg0
@@ -106,6 +107,7 @@ sti 3
 // k += 1
 inc reg6
 jmp k1_start 
+Label k1_end
 
 // data[2*i+1]
 mov reg4 reg0
@@ -126,6 +128,7 @@ sti 3
 
 // k = 0
 clr reg6
+Label k2_start
 // 8
 clr reg0
 inc reg0
@@ -159,7 +162,7 @@ sti 3
 // k += 1
 inc reg6
 jmp k2_start
-
+Label k2_end
 //if (sum > max) { max = sum;}
 // reg1 = max
 ldi 1

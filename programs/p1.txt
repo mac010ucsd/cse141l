@@ -42,7 +42,7 @@ ldr reg0
 xor reg0 reg1
 sti 3
 clr reg6
-clr reg0
+clr reg0 //Label k1_start
 inc reg0
 lsl reg0
 lsl reg0
@@ -60,8 +60,8 @@ ldi 3
 lsr reg0
 sti 3
 inc reg6
-jmp k1_start 
-mov reg4 reg0
+jmp k1_start
+mov reg4 reg0 //Label k1_end
 lsl reg0
 inc reg0
 ldr reg0
@@ -73,7 +73,7 @@ ldr reg0
 xor reg0 reg1
 sti 3
 clr reg6
-clr reg0
+clr reg0 //Label k2_start
 inc reg0
 lsl reg0
 lsl reg0
@@ -92,23 +92,23 @@ lsr reg0
 sti 3
 inc reg6
 jmp k2_start
-ldi 1
+ldi 1 //Label k2_end
 mov reg0 reg1
 ldi 2
 cmp reg1 reg0
 jge if1_end
 sti 1
-ldi 0    //Label if1_end
+ldi 0 //Label if1_end
 mov reg0 reg1
 ldi 2
 cmp reg0 reg1
 jge if2_end
 sti 0
-inc reg5  //Label if2_end
+inc reg5 //Label if2_end
 jmp j_start
 inc reg4 //Label j_end
 jmp i_start
-clr reg0 //Label i_end 
+done //Label i_end
 
 
 
