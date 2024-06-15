@@ -14,7 +14,7 @@ module test_bench;
   logic signed[15:0] Tmp[32];	      // caches all 16-bit values
   logic signed[16:0] diff;		      // signed difference -- Dist = abs(diff)
 
-  DUT D1(.clk  (clk  ),	              // your design goes here
+  top D1(.clk  (clk  ),	              // your design goes here
 		 .start(start),
 		 .done (done )); 
 

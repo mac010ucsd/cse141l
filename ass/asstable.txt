@@ -79,7 +79,7 @@ lsl
 101001
 
 
-rol
+lol
 [6 bit op] [3 bit reg] 
 101010
 
@@ -101,7 +101,7 @@ lsr on a 3 bit reg
 ldr
 [6 bit op] [3 bit reg] 
 101110
-load from [reg0] to reg
+load from [reg] to reg0
 str
 [6 bit op] [3 bit reg]
 101111
@@ -115,7 +115,6 @@ sti
 [6 bit op] [3 bit imm]
 110001
 store from reg0 to 64+imm
-
 
 done
 [9 bit op]

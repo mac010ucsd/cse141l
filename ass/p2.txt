@@ -1,0 +1,94 @@
+clr reg0
+not reg0
+sti 2
+sti 3
+clr reg0
+sti 4
+sti 5
+clr reg4
+clr reg0 //Label i_start
+not reg0
+lsr reg0
+lsr reg0
+cmp reg4 reg0 
+jge i_end
+mov reg4 reg5
+inc reg5
+inc reg5
+clr reg0 //Label j_start
+not reg0
+lsr reg0
+lsr reg0
+cmp reg5 reg0
+jge j_end
+ldr reg4
+mov reg0 reg1
+mov reg4 reg0
+inc reg0
+ldr reg0
+mov reg0 reg2
+ldr reg5
+mov reg5 reg3
+mov reg5 reg0
+inc reg0
+ldr reg0
+mov reg0 reg6
+cmp reg1 reg3
+jg val1_bigger
+cmp reg3 reg1
+jg val2_bigger
+cmp reg2 reg6
+jgm val1_bigger
+cmp reg6 reg2
+jgm val2_bigger
+mov reg6 reg0 //Label val2_bigger
+sub reg0 reg2
+mov reg0 reg6
+mov reg7 reg0
+sub reg3 reg0
+sub reg3 reg1
+mov reg3 reg1
+mov reg6 reg2
+jmp compare_diff
+mov reg6 reg0 //Label val1_bigger
+sub reg2 reg0
+mov reg7 reg0
+sub reg1 reg0
+sub reg1 reg3
+ldi 4         //Label compare_diff
+mov reg0 reg3
+ldi 5
+cmp reg1 reg3
+jgm diff_bigger
+cmp reg3 reg1
+jgm maxd_bigger
+cmp reg2 reg0
+jgm diff_bigger
+cmp reg0 reg2
+jgm maxd_bigger
+mov reg1 reg0 //Label diff_bigger
+sti 4
+mov reg2 reg0
+sti 5
+ldi 2         //Label maxd_bigger
+mov reg0 reg3
+ldi 3
+cmp reg3 reg1
+jgm mind_bigger
+cmp reg1 reg3
+jgm diff1_bigger
+cmp reg2 reg0
+jgm diff1_bigger
+cmp reg0 reg2
+jgm mind_bigger
+mov reg1 reg0 //Label mind_bigger
+sti 2
+mov reg2 reg0
+sti 3
+inc reg5 //Label diff1_bigger
+inc reg5
+jmp j_start
+inc reg4  //Label j_end
+inc reg4
+jmp i_start
+clr reg0 //Label i_end

@@ -55,20 +55,26 @@ module top (
     logic [3:0] reg0, reg1;
     logic [7:0] imm;
     logic use_imm;
+    logic imm_as_input_b;
+    logic use_other_reg_bus;
 
-    decoder decode0 (.instr(inst), .reg0(reg0), .reg1(reg1), .imm(imm), .use_imm(use_imm));
+    decoder decode0 (.instr(inst), .reg0(reg0), .reg1(reg1), .imm(imm), 
+        .use_imm(use_imm), .imm_as_input_b(imm_as_input_b), .use_other_reg_bus(use_other_reg_bus));
 
     logic[7:0] reg_dat_in;
      // logic[3:0] rdwr_addr, rd_addr;
     logic[7:0] reg_datA_out, reg_datB_out;
     
     logic [7:0] b_or_1;
-    assign b_or_1 = b_or_1_mux ? 8'b00000001 : reg_datB_out;
+    assign b_or_1 = b_or_1_mux ? 8'b00000001 : (imm_as_input_b ? imm : reg_datB_out);
 
     // reg_dat_in = reg_loopback ? reg_datA_out : reg_dat
     logic [3:0] wr_bus;
 
-    assign wr_bus = reg_loopback ? reg1 : reg0;
+    logic wr_reg_sel;
+
+    assign wr_reg_sel = reg_loopback;
+    assign wr_bus = wr_reg_sel ? reg1 : reg0;
 
     reg_file regfile0 (.dat_in(reg_dat_in), .clk(clk), .wr_en(reg_wr_en),
         .rd_addr0(reg0), .rd_addr1(reg1), .datA_out(reg_datA_out),

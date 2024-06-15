@@ -122,9 +122,8 @@ always_comb begin
       b_or_1_mux = 1'b1; 
       reg_wr_en = 1'b1;
     end
-    'b101010: begin // rol 
-      alu_op = 4'b0101;
-      b_or_1_mux = 1'b1; 
+    'b101010: begin // lol 
+      alu_op = 4'b1100;
       reg_wr_en = 1'b1;
     end
     'b101011: begin // clr
@@ -144,7 +143,7 @@ always_comb begin
     
     'b101110: begin // ldr 
       reg_wr_en = 1'b1;
-      alu_or_reg_to_dat_sel = 1'b1; // load from [reg0] to reg
+      alu_or_reg_to_dat_sel = 1'b1; // load from [reg] to reg0
     end
     'b101111: begin // str 
       dat_wr_en = 1'b1;

@@ -3,7 +3,8 @@ module decoder (
     // output logic [8:0] opcode, // opcode passthrough
     output logic [3:0] reg0, reg1,
     output logic [7:0] imm,
-    output logic use_imm);
+    output logic use_imm, imm_as_input_b,
+    use_other_reg_bus);
 
 always_comb begin
     // opcode = instr;
@@ -11,6 +12,8 @@ always_comb begin
     use_imm = 'b0;
     reg0 = 'b0;
     reg1 = 'b1;
+    imm_as_input_b = 'b0;
+    use_other_reg_bus = 'b0;
     casez(instr)    // override defaults with exceptions
         'b00???????: begin // for cmp, mov
             reg0 = instr[5:3];
@@ -34,6 +37,11 @@ always_comb begin
             imm = {4'b0, instr[3:0]};
             use_imm = 'b1;
         end 
+        'b101010???: begin // LOL
+            reg0 = 'b0;
+            reg1 = {instr[2:0]};
+            imm_as_input_b = 'b1;
+        end
         'b1010?????: begin // 1 3-bit reg inc ... clr
             reg0 = {instr[2:0]};
             reg1 = 'b0;
@@ -44,7 +52,13 @@ always_comb begin
             reg1 = 'b0;
             use_imm = 'b0;
         end 
-        'b10111????: begin // ldr, str
+        'b101110???: begin // ldr,
+            reg0 = 'b0;
+            reg1 = {instr[2:0]};
+            use_other_reg_bus = 'b1;
+            use_imm = 'b0;
+        end
+        'b10111????: begin // str
             reg0 = {instr[2:0]};
             reg1 = 'b0;
             use_imm = 'b0;

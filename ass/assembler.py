@@ -8,7 +8,7 @@ outfile = ""
 with open("asstable.txt", "r") as t:
     f = t.read()
 
-with open("p1.txt", "r") as t:
+with open("p3.txt", "r") as t:
     assfile = t.read()
 
 ins_name = []
@@ -82,6 +82,7 @@ for i in assfile:
 
     #print(i)
     # print(i[0][len(i)])
+    print(i)
     outline = ""
     outline += opcode_bible[i[0]][len(i)]["op_code"] # + " "
     # print(outline)

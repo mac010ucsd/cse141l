@@ -1,0 +1,166 @@
+clr reg0
+mov reg0 reg1
+mov reg0 reg2
+mov reg0 reg3
+mov reg0 reg4
+mov reg0 reg5
+mov reg0 reg6
+inc reg1
+lsl reg1
+lsl reg1
+lsl reg1
+lsl reg1
+lsl reg1
+lsl reg1
+mov reg1 reg2
+lsl reg2
+str reg1 //Label clearstart
+inc reg1
+cmp reg2 reg1
+jge clearstart
+clr reg1
+clr reg5 //Label i_start
+mov reg5 reg5 //Label n0_start
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0
+inc reg0
+inc reg0
+ldr reg0 
+mov reg0 reg1
+clr reg0
+inc reg0
+mov reg0 reg2 
+and reg0 reg1
+cmp reg0 reg2 
+jge n0_skip
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0
+ldr reg0
+mov reg0 reg1
+mov reg5 reg2
+lsl reg0 reg2
+mov reg4 reg2
+lsl reg2 
+lsl reg2
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0
+add reg2 reg0 
+inc reg2
+inc reg2
+inc reg2
+ldr reg2
+add reg0 reg1 
+mov reg7 reg3 
+str reg2 
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0
+ldr reg0
+mov reg5 reg2
+lol reg2
+mov reg0 reg1
+mov reg4 reg2
+lsl reg2 
+lsl reg2 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 
+add reg2 reg0 
+inc reg2
+inc reg2
+ldr reg2 
+add reg0 reg3 
+mov reg7 reg6
+add reg0 reg1 
+mov reg7 reg3 
+str reg2        
+add reg6 reg3   
+mov reg0 reg3
+mov reg4 reg0
+lsl reg0
+lsl reg0
+ldr reg0 
+mov reg5 reg1
+lsl reg0 reg1
+add reg0 reg3
+mov reg7 reg3
+str reg2 
+mov reg6 reg2 
+add reg2 reg3
+mov reg3 reg6
+mov reg4 reg0
+lsl reg0
+lsl reg0
+ldr reg0 
+mov reg5 reg2
+lol reg2 
+mov reg0 reg1
+mov reg4 reg2
+lsl reg2 
+lsl reg2 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 
+add reg2 reg0 
+inc reg2 
+ldr reg2 
+add reg0 reg1
+mov reg7 reg3 
+mov reg6 reg1 
+add reg0 reg1 
+mov reg7 reg1
+add reg3 reg1 
+str reg2        
+mov reg4 reg2
+lsl reg2 
+lsl reg2 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 
+add reg2 reg0 
+ldr reg2 
+add reg0 reg3
+str reg2
+clr reg0 //Label n0_skip
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+inc reg5
+cmp reg0 reg5
+jge n0_start
+clr reg0 //Label i_end
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+inc reg4
+cmp reg0 reg4 
+jge i_start 

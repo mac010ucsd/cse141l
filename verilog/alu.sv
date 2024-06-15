@@ -45,6 +45,8 @@ always_comb begin
       out = ~input_A;
     'b1011: // clear
       out = 'b0;
+    'b1100: // overflow of left shift bits
+      out = input_A >> (7 - input_B);
     default: begin
       cflag = 'b0;
       out = 'b0;
