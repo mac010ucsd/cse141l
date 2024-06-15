@@ -4,10 +4,7 @@
 module PC #(parameter D=10)(
   input reset,					// synchronous reset
         clk,
-        // reljump_en,             // rel. jump enable
-        absjump_en,				// abs. jump enable
         jmp_en,
-  input       [D-1:0] target,	// how far/where to jump
   input       [D-1:0] absaddress,
   output logic[D-1:0] prog_ctr
 );
@@ -16,12 +13,8 @@ module PC #(parameter D=10)(
   always_ff @(posedge clk) begin
     if(reset)
 	    prog_ctr <= 'b0;
-    // else if(reljump_en)
-      // prog_ctr <= prog_ctr + target;
-    else if(jmp_en && absjump_en)
-	    prog_ctr <= absaddress;
     else if(jmp_en)
-      prog_ctr <= prog_ctr + target;
+	    prog_ctr <= absaddress;
     else
       prog_ctr <= prog_ctr + 'b1;
   end

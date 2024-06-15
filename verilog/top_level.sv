@@ -10,42 +10,39 @@ module top (
     logic[9:0] absaddress;
     logic[3:0] LutPointer;
 
-
     LUT lut0(.LutPointer(LutPointer), .absaddress(absaddress));
 
     logic reset;
-    logic pc_jmp_abs;
     logic pc_jmp_en;
-    logic target;
     logic [9:0] pc;
+
     logic[2:0] alu_flags;
 
-    PC pc0 (.reset(reset), .clk(clock), .absjump_en(pc_jmp_abs),
+    PC pc0 (.reset(reset), .clk(clock), 
             .jmp_en (pc_jmp_en),
-            .target(target), .prog_ctr(pc), .absaddress(absaddress));
+            .prog_ctr(pc), 
+            .absaddress(absaddress));
 
     logic [8:0] inst;
+
     instr_ROM inst_mem0 (.prog_ctr(pc), .mach_code(inst));
 
-    logic sel_a_mux,
-        sel_b_mux,
-        sel_gd_b_mux,
-        sel_bit_mux,
-        sel_shift_mux,
-        shift_dir,
-        shift_mode,
-        reg_wr_en,
-        dat_wr_en,
-        reg_in_sel,
-        dat_in_sel,
-        reg_alu_dat_sel;
-    logic [2:0] alu_sel_out;
+    logic inv_b_mux,
+            b_or_0_mux,
+            b_or_1_mux,
+            cin,
+            reg_wr_en,
+            reg_loopback,
+            dat_wr_en,
+            dat_in_sel,
+            alu_or_reg_to_dat_sel;
+    logic [3:0] alu_op;
 
-    control control0 (.instr(inst), .sel_a_mux(sel_a_mux), .sel_b_mux(sel_b_mux),
-        .sel_gd_b_mux(sel_gd_b_mux), .sel_bit_mux(sel_bit_mux), .sel_shift_mux(sel_shift_mux),
-        .shift_dir(shfit_dir), .shift_mode(shift_mode), .reg_wr_en(reg_wr_en), .dat_wr_en(dat_wr_en),
-        .pc_jmp_abs(pc_jmp_abs), .reg_in_sel(reg_in_sel), .dat_in_sel(dat_in_sel), 
-        .reg_alu_dat_sel(reg_alu_dat_sel), .alu_sel_out(alu_sel_out), .pc_jmp_en(pc_jmp_en), .alu_flags(alu_flags), .LutPointer(LutPointer));
+    control control0 (.instr(inst), .alu_flags(alu_flags), .LutPointer(LutPointer),
+        .inv_b_mux(inv_b_mux), .b_or_1_mux(b_or_1_mux), .b_or_0_mux(b_or_0_mux),
+        .cin(cin), .pc_jmp_en(pc_jmp_en), .reg_wr_en(reg_wr_en), .reg_loopback(reg_loopback),
+        .dat_wr_en(dat_wr_en), .dat_in_sel(dat_in_sel), .alu_or_reg_to_dat_sel(alu_or_reg_to_dat_sel),
+        .alu_op(alu_op));
 
     logic [3:0] reg0, reg1;
     logic [7:0] imm;
@@ -63,27 +60,22 @@ module top (
     logic[7:0] alu_out;
 
     logic reg_A_out;
+
     assign reg_A_out = use_imm ? imm : reg_datA_out;
 
-    alu alu0 (.sel_a_mux(sel_a_mux),
-          .sel_b_mux(sel_b_mux),
-          .sel_gd_b_mux(sel_gd_b_mux),
-          .sel_bit_mux(sel_bit_mux),
-          .sel_shift_mux(sel_shift_mux),
-          .shift_dir(shift_dir),
-          .shift_mode(shift_mode), 
-          .sel_out_mux(alu_sel_out),
-          .input_A(reg_A_out), // select from a mux.
-          .input_B(reg_datB_out),
-          .out(alu_out),
-          .flags(alu_flags));
+    alu alu0 (.alu_op(alu_op),
+     .cin(cin), 
+     .input_A(reg_A_out), 
+     .input_B(reg_datB_out), 
+     .out(alu_out), 
+     .flags(alu_flags));
     
     logic[7:0] dat_mem_out;
 
     dat_mem mem0 (.dat_in(dat_in_sel ? reg_datB_out : alu_out), 
         .clk(clock), .wr_en(dat_wr_en), .addr(reg_A_out), .dat_out(dat_mem_out));
 
-    assign reg_dat_in = dat_in_sel ? reg_datB_out : (reg_alu_dat_sel ? dat_mem_out : alu_out);
+    assign reg_dat_in = dat_in_sel ? reg_datB_out : (alu_or_reg_to_dat_sel ? dat_mem_out : alu_out);
     assign target = reg_A_out;
     
 endmodule
