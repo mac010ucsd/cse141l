@@ -2,7 +2,7 @@
 // supports both relative and absolute jumps
 // use either or both, as desired
 module top (
-    input   clock,
+    input   clk,
             start,
     output  done
 );
@@ -13,6 +13,9 @@ module top (
     LUT lut0(.LutPointer(LutPointer), .absaddress(absaddress));
 
     logic reset;
+
+    assign reset = start;
+    
     logic pc_jmp_en;
     logic [9:0] pc;
 
@@ -25,7 +28,7 @@ module top (
 
     logic [8:0] inst;
 
-    instr_ROM inst_mem0 (.prog_ctr(pc), .mach_code(inst));
+    instr_ROM dm (.prog_ctr(pc), .mach_code(inst));
 
     logic inv_b_mux,
             b_or_0_mux,
@@ -59,7 +62,7 @@ module top (
 
     logic[7:0] alu_out;
 
-    logic reg_A_out;
+    logic [7:0] reg_A_out;
 
     assign reg_A_out = use_imm ? imm : reg_datA_out;
 
