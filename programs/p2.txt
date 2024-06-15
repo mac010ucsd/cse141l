@@ -86,7 +86,9 @@ sti 2
 move reg2 reg0
 sti 3
 inc reg5 //Label diff1_bigger
+inc reg5
 jmp j_start
 inc reg4  //Label j_end
+inc reg4
 jmp i_start
 clr reg0 //Label i_end
