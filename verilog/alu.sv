@@ -19,14 +19,15 @@ logic zflag;
 logic cout;
 
 always_comb begin
-  cflag = 'b0;
+  cflag = 'b0; // for unsigned number if cflag = 1, A < B (borrow bit)
   out = 'b0;
 
   case(alu_op)
     'b0001: // add
       {cflag, out} = input_A + input_B; 
-    'b0010: // sub
-      {cflag, out} = input_A - input_B;
+    'b0010: 
+      // substraction by signed
+      {cflag, out} = input_A + ~input_B + 1;
     'b0011: // lsl
       out = input_A << input_B;
     'b0100: // lsr
@@ -52,7 +53,7 @@ always_comb begin
   endcase
 end
 
-assign   nflag = out[7];
+assign   nflag = out[7]; // indicates for signed number if n flag = 1, negative, A < B, if n = 0, A >= B
 assign   zflag = !(|out);
 assign   flags = {cflag, nflag, zflag};
 
