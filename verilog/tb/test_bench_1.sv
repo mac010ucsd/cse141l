@@ -35,7 +35,7 @@ initial begin
 	Min = 'd16;						         // start test bench Min at max value
 	Max = 'd0;						         // start test bench Max at min value
     case(loop_ct)
-        0: $readmemb("test0.txt",D1.dm.core);
+        0: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test0.txt",D1.dm.core);
 	    1: $readmemb("test1.txt",D1.dm.core);
         2: $readmemb("test2.txt",D1.dm.core);
 	    3: $readmemb("test3.txt",D1.dm.core);

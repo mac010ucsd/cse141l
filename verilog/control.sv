@@ -11,6 +11,7 @@ module control (
                 dat_wr_en,
                 dat_in_sel,
                 alu_or_reg_to_dat_sel,
+                regA_dual_output,
   output logic [3:0] alu_op,
   output logic [3:0] LutPointer
 );
@@ -29,6 +30,7 @@ always_comb begin
   dat_wr_en = 'b0;
   dat_in_sel = 'b0;
   alu_or_reg_to_dat_sel = 'b0;
+  regA_dual_output = 'b0;
 
   casez(instr[8:3])   // take 6 msb as opcode.
     'b000???: begin // cmp, same as subtract. (A - B)
@@ -123,8 +125,8 @@ always_comb begin
       reg_wr_en = 1'b1;
     end
     'b101011: begin // clr
-      b_or_0_mux = 1'b1;
-      alu_op = 4'b0111; // AND op1 with 'b0;
+      // b_or_0_mux = 1'b1;
+      alu_op = 4'b1011; // AND op1 with 'b0;
       reg_wr_en = 1'b1;
     end
     'b101100: begin // not 
@@ -151,6 +153,7 @@ always_comb begin
     end
     'b110001: begin // sti 
       dat_wr_en = 1'b1;
+      regA_dual_output = 1'b1;
       dat_in_sel = 1'b1;  // store from reg0 to 64+imm
     end
 

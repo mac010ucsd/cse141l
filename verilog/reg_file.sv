@@ -6,6 +6,7 @@ module reg_file (
 	input      	wr_en,           // write enable
 	input[3:0] 	rdwr_addr,		  // read address pointers
 				rd_addr,
+	// input reset,
 	output logic[7:0] 	datA_out, // read data
 						datB_out);
 

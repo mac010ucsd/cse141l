@@ -53,7 +53,7 @@ always_comb begin
             reg0 = 'b0;
             reg1 = 'b0;
             /// 0100 0000
-            imm = {4'b0100, instr[3:0]};
+            imm = {4'b01000, instr[2:0]};
             use_imm = 'b1;
         end 
         default: begin

@@ -43,8 +43,11 @@ always_comb begin
       out = input_A ^ input_B;
     'b1010: // not
       out = ~input_A;
+    'b1011: // clear
+      out = 'b0;
     default: begin
       cflag = 'b0;
+      out = 'b0;
     end
   endcase
 end

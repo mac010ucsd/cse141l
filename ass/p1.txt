@@ -3,7 +3,6 @@ inc reg0
 lsl reg0
 lsl reg0
 lsl reg0
-lsl reg0
 sti 0
 clr reg0
 sti 1
