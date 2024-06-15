@@ -3,29 +3,13 @@ module LUT (
     output logic[9:0]       absaddress
 );
 
-always_comb case(LutPointer)
-	// Program 1
-    0: absaddress = 13;
-    1: absaddress = 22;
-    2: absaddress = 43;
-    3: absaddress = 62;
-    4: absaddress = 74;
-    5: absaddress = 93;
-    6: absaddress = 99;
-    7: absaddress = 105;
-	8: absaddress = 107;
-    9: absaddress = 109;
-	// Program 2
-    10: absaddress = 1;
-    11: absaddress = 1;
-    12: absaddress = 1;
-    13: absaddress = 1;
-    14: absaddress = 1;
-    
-    // Program 3
-    15: absaddress = 1;
+// 2**4 entries
 
-	default: absaddress = 'b0;
-endcase
+logic[9:0] core [2**4];
+
+initial							    // load the program
+    $readmemb("C:/Users/Steam/Documents/cse141L/ass/output_jmps.txt", core);
+
+assign absaddress = core[LutPointer];
 
 endmodule

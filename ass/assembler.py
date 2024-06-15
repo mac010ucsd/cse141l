@@ -101,5 +101,13 @@ for i in assfile:
 # print(outfile)
 print(jmp_book_2)
 
-with open("output.txt", "w") as t:
+with open("output_code.txt", "w") as t:
     t.write(outfile)
+
+# print(jmp_decode)
+# with open("output_code.txt", "w") as t:
+ #   t.write(outfile)
+
+with open("output_jmps.txt", "w") as t:
+    # should be 10 bit as our program has 10 bit depth
+    t.write("\n".join([f"{i:010b}" for i in jmp_book_2]))

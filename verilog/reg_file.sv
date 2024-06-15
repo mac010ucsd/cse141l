@@ -24,6 +24,7 @@ module reg_file (
 	always_ff @(posedge clk) begin
 		if(wr_en)				   
 			regs [wr_addr0] <= dat_in; 
+		regs[7] <= {7'b0, alu_flags[2]};
 		alu_reg <= alu_flags;
 	end
 

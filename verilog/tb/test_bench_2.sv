@@ -39,16 +39,16 @@ initial begin
 	Min = 'hffff;						     // start test bench Min at max value
 	Max = 'h0;						         // start test bench Max at min value
     case(loop_ct)
-        0: $readmemb("test0.txt",D1.dm.core);
-	    1: $readmemb("test1.txt",D1.dm.core);
-        2: $readmemb("test2.txt",D1.dm.core);
-	    3: $readmemb("test3.txt",D1.dm.core);
-        4: $readmemb("test4.txt",D1.dm.core);
-        5: $readmemb("test5.txt",D1.dm.core);
-        6: $readmemb("test6.txt",D1.dm.core);
-	    7: $readmemb("test7.txt",D1.dm.core);
-        8: $readmemb("test8.txt",D1.dm.core);
-        9: $readmemb("test9.txt",D1.dm.core);
+        0: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test0.txt",D1.dm.core);
+	    1: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test1.txt",D1.dm.core);
+        2: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test2.txt",D1.dm.core);
+	    3: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test3.txt",D1.dm.core);
+        4: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test4.txt",D1.dm.core);
+        5: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test5.txt",D1.dm.core);
+        6: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test6.txt",D1.dm.core);
+	    7: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test7.txt",D1.dm.core);
+        8: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test8.txt",D1.dm.core);
+        9: $readmemb("C:/Users/Steam/Documents/cse141L/verilog/tb/test9.txt",D1.dm.core);
     endcase
     for(int i=0; i<32; i++) begin
       Tmp[i] = {D1.dm.core[2*i],D1.dm.core[2*i+1]};	  // load values into mem, copy to Tmp array

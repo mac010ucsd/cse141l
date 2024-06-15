@@ -28,7 +28,7 @@ always_comb begin
             imm = {4'b0, instr[3:0]};
             use_imm = 'b1;
         end 
-        'b10010????: begin // jmp
+        'b1001?????: begin // jmp
             reg0 = 'b0;
             reg1 = 'b0;
             imm = {4'b0, instr[3:0]};

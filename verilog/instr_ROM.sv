@@ -7,7 +7,7 @@ module instr_ROM #(parameter D=10)(
 
   logic[8:0] core[2**D]; // 2^10 entries? we should be fine.
   initial							    // load the program
-    $readmemb("C:/Users/Steam/Documents/cse141L/ass/output.txt",core);
+    $readmemb("C:/Users/Steam/Documents/cse141L/ass/output_code.txt",core);
 
   always_comb mach_code = core[prog_ctr];
 

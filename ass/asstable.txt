@@ -65,13 +65,10 @@ jmp
 [5 bit op] [4 bit imm]
 10010
 
-
-
-
-
-
+jgm
+[5 bit op] [4 bit imm]
 10011
-any
+
 inc
 [6 bit op] [3 bit reg]
 101000

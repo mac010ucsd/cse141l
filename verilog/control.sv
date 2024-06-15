@@ -108,7 +108,10 @@ always_comb begin
       pc_jmp_en = 1'b1;
       LutPointer = instr[3:0];
     end
-
+    'b10011?: begin // jgm
+      pc_jmp_en = (!alu_flags[2] | alu_flags[0]); // !C | Z from ECE 108 slides
+      LutPointer = instr[3:0];
+    end
     'b101000: begin // inc
       b_or_1_mux = 1'b1;
       alu_op = 4'b0001;
