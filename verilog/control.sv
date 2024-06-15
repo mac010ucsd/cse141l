@@ -145,7 +145,8 @@ always_comb begin
     end
     'b101111: begin // str 
       dat_wr_en = 1'b1;
-      dat_in_sel = 1'b1;  // store from reg0 to [reg]
+      // dat_in_sel = 1'b1;  // store from reg0 to [reg]
+      reg_loopback = 1'b1;
     end
     'b110000: begin // ldi
       reg_wr_en = 1'b1;

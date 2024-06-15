@@ -6,7 +6,8 @@ module PC #(parameter D=10)(
         clk,
         jmp_en,
   input       [D-1:0] absaddress,
-  output logic[D-1:0] prog_ctr
+  output logic[D-1:0] prog_ctr,
+  output done
 );
 
 
@@ -19,4 +20,5 @@ module PC #(parameter D=10)(
       prog_ctr <= prog_ctr + 'b1;
   end
 
+  assign done = prog_ctr >= 2**(D) - 1;
 endmodule

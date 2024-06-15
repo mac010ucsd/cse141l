@@ -11,7 +11,7 @@ for (int i = 0; i < 31; i++) {
 			sum += val & 1; // check smallest bit to see if it's 1
 			val >> 1; // right shift tmp
 		}
-        val = data[2* i +1], data[2 * j+1];
+        val = data[2* i +1] ^ data[2 * j+1];
         for (k = 0; k < 8; k++){ // count number of 1s
 			sum += val & 1; // check smallest bit to see if it's 1
 			val >> 1; // right shift tmp

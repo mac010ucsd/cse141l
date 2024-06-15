@@ -49,8 +49,9 @@ outfile = ""
 jmp_book  = {}
 
 cnt = 0
-
+cn = 0
 assfile_clean = []
+jmp_book_2 = {}
 
 for i in assfile:
     p = i.split("//")
@@ -58,8 +59,9 @@ for i in assfile:
     if len(p) == 2 and len(p[1].split()) == 2:
         # then it is a label
         jmp_book[cnt] = p[1].split()[1] 
+        jmp_book_2[cn] = p[1].split()[1]
         cnt += 1
-
+    cn += 1
     
     i = p[0].strip()
     #print(i)
@@ -97,6 +99,7 @@ for i in assfile:
     cnt += 1
 
 # print(outfile)
+print(jmp_book_2)
 
 with open("output.txt", "w") as t:
     t.write(outfile)
