@@ -84,11 +84,13 @@ for i in assfile:
     # print(outline)
     if len(i) > 1:
         t = int(i[1]) if str(i[1]).isdigit() else (int(str(i[1]).replace("reg", "")) if "reg" in str(i[1]) else jmp_decode[str(i[1])])
-        print(t)
-        outline += f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1] # + " "
+        # print(t, f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1])
+        # print (opcode_bible[i[0]][len(i)]["op_code"], f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_1"]:-1], t, opcode_bible[i[0]][len(i)])
+        outline += f"{t:09b}"[9 - opcode_bible[i[0]][len(i)]["op_1"]:] # + " "
     if len(i) > 2:
         t = int(i[2]) if "reg" not in i[2] else int(str(i[2]).replace("reg", ""))
-        outline += f"{t:09b}"[8 - opcode_bible[i[0]][len(i)]["op_2"]:-1] # + " "
+        outline += f"{t:09b}"[9 - opcode_bible[i[0]][len(i)]["op_2"]:] # + " "
+    # print(outline)
     outfile += outline + "\n"
     cnt += 1
 
