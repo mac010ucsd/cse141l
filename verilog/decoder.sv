@@ -20,7 +20,7 @@ always_comb begin
         'b01???????: begin
             reg0 = {1'b0, instr[3:2]};
             reg1 = {1'b0, instr[1:0]};
-            use_imm = 'b1;
+            use_imm = 'b0;
         end // [5 bit op] [4 bit imm] for jumps. prio over other reg case.
         'b1000?????: begin // jg, jge
             reg0 = 'b0;
@@ -49,10 +49,11 @@ always_comb begin
             reg1 = 'b0;
             use_imm = 'b0;
         end 
-        'b11000????: begin // ldi, sti
+        'b11000????: begin // ldi, sti (+64)
             reg0 = 'b0;
             reg1 = 'b0;
-            imm = {4'b0, instr[3:0]};
+            /// 0100 0000
+            imm = {4'b0100, instr[3:0]};
             use_imm = 'b1;
         end 
         default: begin
