@@ -12,6 +12,7 @@ module control (
                 dat_in_sel,
                 alu_or_reg_to_dat_sel,
                 regA_dual_output,
+                use_reg1_out_for_dat_addr,
   output logic [3:0] alu_op,
   output logic [3:0] LutPointer
 );
@@ -31,6 +32,7 @@ always_comb begin
   dat_in_sel = 'b0;
   alu_or_reg_to_dat_sel = 'b0;
   regA_dual_output = 'b0;
+  use_reg1_out_for_dat_addr = 'b0;
 
   casez(instr[8:3])   // take 6 msb as opcode.
     'b000???: begin // cmp, same as subtract. (A - B)
@@ -101,7 +103,7 @@ always_comb begin
       // look for CF = 0, ZF = 1
       // pc_jmp_en = 1'b1;
       // flags = {cflag, nflag, zflag};
-      pc_jmp_en = !alu_flags[2] & alu_flags[0]; // !C & 0
+      pc_jmp_en = !alu_flags[2] & !alu_flags[0]; // !C & 0
       LutPointer = instr[3:0];
     end
     'b10010?: begin // jmp
@@ -109,7 +111,7 @@ always_comb begin
       LutPointer = instr[3:0];
     end
     'b10011?: begin // jgm jump by magnitude look for carry flag
-      pc_jmp_en = (!alu_flags[2] | alu_flags[0]); // !C | Z
+      pc_jmp_en = (!alu_flags[1] | alu_flags[0]); // !C | Z
       LutPointer = instr[3:0];
     end
     'b101000: begin // inc
@@ -122,9 +124,8 @@ always_comb begin
       b_or_1_mux = 1'b1; 
       reg_wr_en = 1'b1;
     end
-    'b101010: begin // rol 
-      alu_op = 4'b0101;
-      b_or_1_mux = 1'b1; 
+    'b101010: begin // lol 
+      alu_op = 4'b1100;
       reg_wr_en = 1'b1;
     end
     'b101011: begin // clr
@@ -145,11 +146,12 @@ always_comb begin
     'b101110: begin // ldr 
       reg_wr_en = 1'b1;
       alu_or_reg_to_dat_sel = 1'b1; // load from [reg0] to reg
+      use_reg1_out_for_dat_addr = 1'b1;
     end
     'b101111: begin // str 
       dat_wr_en = 1'b1;
       // dat_in_sel = 1'b1;  // store from reg0 to [reg]
-      reg_loopback = 1'b1;
+      //  reg_loopback = 1'b1;
     end
     'b110000: begin // ldi
       reg_wr_en = 1'b1;

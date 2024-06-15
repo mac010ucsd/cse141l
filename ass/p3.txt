@@ -30,19 +30,25 @@ inc reg0
 ldr reg0 
 mov reg0 reg1
 clr reg0
+cmp reg0 reg5 //Label start
+jge skip
+lsr reg1
+inc reg0
+jmp start
+clr reg0 //Label skip
 inc reg0
 mov reg0 reg2 
 and reg0 reg1
-cmp reg0 reg2 
-jge n0_skip
+cmp reg2 reg0
+jg n0_skip
 mov reg4 reg0
 lsl reg0
 lsl reg0
 inc reg0
 ldr reg0
-mov reg0 reg1
 mov reg5 reg2
 lsl reg0 reg2
+mov reg0 reg1
 mov reg4 reg2
 lsl reg2 
 lsl reg2
@@ -85,7 +91,7 @@ add reg2 reg0
 inc reg2
 inc reg2
 ldr reg2 
-add reg0 reg3 
+add reg1 reg3 
 mov reg7 reg6
 add reg0 reg1 
 mov reg7 reg3 

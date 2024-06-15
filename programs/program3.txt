@@ -39,11 +39,20 @@ ldr reg0 // load b0 into reg1
 mov reg0 reg1
 
 clr reg0
+cmp reg0 reg5 //Label start
+jge skip
+lsr reg1
+inc reg0
+jmp start
+//Label skip
+
+
+clr reg0
 inc reg0
 mov reg0 reg2 // reg2 = 1
 and reg0 reg1 // b0 & 1 -> reg0
-cmp reg0 reg2 // if b0 & 1 == 1 then X = A0 else X = 0 and we can skip the part
-jge p1_skip
+cmp reg2 reg0 // if b0 & 1 == 1 then X = A0 else X = 0 and we can skip the part
+jg p1_skip
 
 // reg2 = 1
 // reg1 = b0 (can be replaced)
@@ -61,11 +70,11 @@ lsl reg0
 lsl reg0
 inc reg0 // inc once for a0, 0 times for a1.
 ldr reg0 // load A0 into reg0
-mov reg0 reg1
 
 // LSL A0 by N  (uses REG2)
 mov reg5 reg2
 lsl reg0 reg2 // LSL a0 by n stored in reg1
+mov reg0 reg1
 
 // LOAD Y0 (USES REG0, REG2)
 mov reg4 reg2
@@ -123,7 +132,7 @@ inc reg2 // inc 3 times for y0, 0 times for y3.
 ldr reg2 
 
 // ADD A0 (MODIFIED) to Y0, (ADD AND) SAVE CARRY
-add reg0 reg3 // add old carry 
+add reg1 reg3 // add old carry 
 mov reg7 reg6 // save new carry 
 add reg0 reg1 // add X
 mov reg7 reg3 // save new carry again

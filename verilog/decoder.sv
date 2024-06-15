@@ -40,7 +40,7 @@ always_comb begin
         'b101010???: begin // LOL
             reg0 = 'b0;
             reg1 = {instr[2:0]};
-            imm_as_input_b = 'b1;
+            // imm_as_input_b = 'b1;
         end
         'b1010?????: begin // 1 3-bit reg inc ... clr
             reg0 = {instr[2:0]};
@@ -62,11 +62,11 @@ always_comb begin
             reg0 = {instr[2:0]};
             reg1 = 'b0;
             use_imm = 'b0;
+            use_other_reg_bus = 'b1;
         end 
         'b11000????: begin // ldi, sti (+64)
             reg0 = 'b0;
             reg1 = 'b0;
-            /// 0100 0000
             imm = {4'b01000, instr[2:0]};
             use_imm = 'b1;
         end 

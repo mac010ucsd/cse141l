@@ -40,7 +40,8 @@ module top (
             reg_loopback,
             dat_wr_en,
             dat_in_sel,
-            alu_or_reg_to_dat_sel;
+            alu_or_reg_to_dat_sel,
+            use_reg1_out_for_dat_addr;
     logic [3:0] alu_op;
 
     logic regA_dual_output;
@@ -50,7 +51,8 @@ module top (
         .cin(cin), .pc_jmp_en(pc_jmp_en), .reg_wr_en(reg_wr_en), .reg_loopback(reg_loopback),
         .dat_wr_en(dat_wr_en), .dat_in_sel(dat_in_sel), .alu_or_reg_to_dat_sel(alu_or_reg_to_dat_sel),
         .regA_dual_output(regA_dual_output),
-        .alu_op(alu_op));
+        .alu_op(alu_op),
+        .use_reg1_out_for_dat_addr        (use_reg1_out_for_dat_addr));
 
     logic [3:0] reg0, reg1;
     logic [7:0] imm;
@@ -85,7 +87,7 @@ module top (
 
     logic [7:0] imm_value;
 
-    assign imm_value = use_imm ? imm : reg_datA_out;
+    assign imm_value = use_imm ? imm : (use_reg1_out_for_dat_addr ? reg_datB_out : reg_datA_out);
 
     alu alu0 (.alu_op(alu_op),
      .cin(cin), 
@@ -98,7 +100,10 @@ module top (
 
     logic[7:0] dat_mem_in;
 
-    assign dat_mem_in = regA_dual_output ? reg_datA_out : alu_out;
+    assign dat_mem_in = regA_dual_output ? reg_datA_out : (use_other_reg_bus ? reg_datB_out : alu_out);
+
+    logic [7:0] DEBUG_data_addr;
+    assign DEBUG_data_addr = dat_wr_en ? imm_value : 'b0;
 
     dat_mem dm (.dat_in(dat_mem_in), 
         .clk(clk), .wr_en(dat_wr_en), .addr(imm_value), .dat_out(dat_mem_out));
