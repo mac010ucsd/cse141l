@@ -16,6 +16,7 @@ Label i_start
 
 // i < 63 8'b00111111
 clr reg0
+not reg0
 lsr reg0
 lsr reg0
 cmp reg4 reg0 
@@ -30,6 +31,7 @@ Label j_start
 
 // j < 63
 clr reg0
+not reg0
 lsr reg0
 lsr reg0
 cmp reg5 reg0
@@ -57,15 +59,16 @@ mov reg0 reg6
 
 //Compare val1 and val2 to calculate diff
 // Compare high bytes of val1 and val2
-cmp reg1 reg2
+cmp reg1 reg3
 jg val1_bigger
 cmp reg3 reg1
 jg val2_bigger
 // if high bits are equal, then compare lower bits
+// for lower bits we compare the magnitude
 cmp reg2 reg6
-jge val1_bigger
+jgm val1_bigger
 cmp reg6 reg2
-jg val2_bigger
+jgm val2_bigger
 
 // if val2 is bigger, then we flip to val2-val1
 Label val2_bigger

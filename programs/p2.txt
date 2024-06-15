@@ -7,6 +7,7 @@ sti 4
 sti 5
 clr reg4
 clr reg0 //Label i_start
+not reg0
 lsr reg0
 lsr reg0
 cmp reg4 reg0 
@@ -15,6 +16,7 @@ mov reg4 reg5
 inc reg5
 inc reg5
 clr reg0 //Label j_start
+not reg0
 lsr reg0
 lsr reg0
 cmp reg5 reg0
