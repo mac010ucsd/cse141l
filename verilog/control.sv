@@ -75,7 +75,7 @@ always_comb begin
       alu_op = 'b1001;
       reg_wr_en = 1'b1;
     end // 'b011111
-    'b10000?: begin // jge
+    'b10000?: begin // jge magnitude
       // flags = {cflag, nflag, zflag};
       // JAE = JG -> CF
       // basic understanding:
@@ -90,7 +90,7 @@ always_comb begin
       pc_jmp_en = !alu_flags[1];
       LutPointer = instr[3:0];
     end
-    'b10001?: begin // jg
+    'b10001?: begin // jg compare signed values
       // JA = JG -> CF, ZF
       // basic understanding:
       // if A is greater than or equal to B,
@@ -103,15 +103,15 @@ always_comb begin
       // look for CF = 0, ZF = 1
       // pc_jmp_en = 1'b1;
       // flags = {cflag, nflag, zflag};
-      pc_jmp_en = !alu_flags[2] & !alu_flags[0]; // !C & 0
+      pc_jmp_en = !alu_flags[1] & !alu_flags[0]; // !C & !0
       LutPointer = instr[3:0];
     end
     'b10010?: begin // jmp
       pc_jmp_en = 1'b1;
       LutPointer = instr[3:0];
     end
-    'b10011?: begin // jgm jump by unsigned magnitude  look for carry flag
-      pc_jmp_en = (!alu_flags[2] | alu_flags[0]); // !C | Z
+    'b10011?: begin // jgm jump by unsigned magnitude look for carry flag
+      pc_jmp_en = (!alu_flags[2] & !alu_flags[0]); // !C & !Z
       LutPointer = instr[3:0];
     end
     'b101000: begin // inc
