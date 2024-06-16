@@ -87,6 +87,8 @@ initial begin
       $display("fail Min = %d",Min);	 // your DUT put wrong answer into core[66:67]
       $display("Min addr = %d, %d",Min1, Min2);
       $display("Min valu = %d %d",Tmp[Min1], Tmp[Min2]);
+      $display("your Min = %d", {D1.dm.core[66],D1.dm.core[67]});
+      $display("your Min = %d", {D1.dm.core[67],D1.dm.core[66]});
       //{D1.dm.core[2*Min1],D1.dm.core[2*Min1+1]},{D1.dm.core[2*Min2],D1.dm.core[2*Min2+1]});
     end
 
@@ -98,6 +100,8 @@ initial begin
       $display("MAD  Max = %d",Max);	 // your DUT put wrong answer into core[68:69]
       $display("Max pair = %d, %d",Max1, Max2);
       $display("Max valu = %d, %d",Tmp[Max1], Tmp[Max2]);
+      $display("your Max = %d", {D1.dm.core[68],D1.dm.core[69]});
+      $display("your Max = %d", {D1.dm.core[69],D1.dm.core[68]});
       //{D1.dm.core[2*Max1],D1.dm.core[2*Max1+1]},{D1.dm.core[2*Max2],D1.dm.core[2*Max2+1]});
     end
     #200ns start = 'b1;

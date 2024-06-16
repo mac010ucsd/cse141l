@@ -159,6 +159,8 @@ lsl reg0 reg1
 add reg0 reg3
 mov reg7 reg3
 str reg2 
+mov reg6 reg1
+add reg0 reg1
 mov reg6 reg2 
 add reg2 reg3
 mov reg3 reg6 // store new carry
@@ -232,6 +234,213 @@ lsl reg0 // 8
 inc reg5
 cmp reg0 reg5 // go back up if 8 > n
 jge loop_n0_start
+
+mov reg5 reg5 //Label n1_start
+
+// B0 = data[4*i+3] = reg6
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0
+inc reg0
+inc reg0
+ldr reg0 // load b0 into reg1
+mov reg0 reg1
+
+clr reg0
+cmp reg0 reg5 //Label start
+jge skip
+lsr reg1
+inc reg0
+jmp start
+//Label skip
+
+
+clr reg0
+inc reg0
+mov reg0 reg2 // reg2 = 1
+and reg0 reg1 // b0 & 1 -> reg0
+cmp reg2 reg0 // if b0 & 1 == 1 then X = A0 else X = 0 and we can skip the part
+jg p1_skip
+
+// reg2 = 1
+// reg1 = b0 (can be replaced)
+// reg0 = whatever
+// reg4 = i
+
+// else we must add LSL A0 by n to lower bits Y0
+// add LOL A0 n to upper bits Y1 (64 + 4 * i)
+
+// CHUNK 1
+
+// LOAD A0 (USES REG0, REG1)
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0 // inc once for a0, 0 times for a1.
+ldr reg0 // load A0 into reg0
+
+// LSL A0 by N  (uses REG2)
+mov reg5 reg2
+lsl reg0 reg2 // LSL a0 by n stored in reg1
+mov reg0 reg1
+
+// LOAD Y0 (USES REG0, REG2)
+mov reg4 reg2
+lsl reg2 
+lsl reg2 // reg2 = 4 i 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 // reg0 = 64
+add reg2 reg0 
+inc reg2
+inc reg2
+inc reg2 // inc 3 times for y0, 0 times for y3.
+ldr reg2 // address of y0 in reg2, value of y0 in reg0
+
+// ADD A0 (MODIFIED) to Y0, (ADD AND) SAVE CARRY
+add reg0 reg1 // Y0 += X0
+mov reg7 reg3 // store overflow in reg1
+str reg2 // stores Y0 (in reg0) at reg2 mem addr 
+// CARRY SAVED IN REG3
+
+// CHUNK 2
+
+// LOAD A0 (USES REG0, REG1)
+mov reg4 reg0
+lsl reg0
+lsl reg0
+inc reg0 // inc once for a0, 0 times for a1.
+ldr reg0 // load A0 into reg0
+
+// LOL A0 by N  (uses REG2, require A0 store in REG0, X stored in REG1)
+mov reg5 reg2
+lol reg2 // LOL a0 by n
+mov reg0 reg1
+
+// LOAD Y1 (USES REG0, REG2)
+mov reg4 reg2
+lsl reg2 
+lsl reg2 // reg2 = 4 i 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 // reg0 = 64
+add reg2 reg0 
+inc reg2
+inc reg2 // inc 3 times for y0, 0 times for y3.
+ldr reg2 
+
+// ADD A0 (MODIFIED) to Y0, (ADD AND) SAVE CARRY
+add reg1 reg3 // add old carry 
+mov reg7 reg6 // save new carry 
+add reg0 reg1 // add X
+mov reg7 reg3 // save new carry again
+str reg2        // store Y0
+add reg6 reg3    // save carry again 
+mov reg0 reg3
+// CARRY SAVED IN REG6
+// Y1 ADDR SAVED IN reg2
+// Y1 VALUE IN REG3
+
+// CHUNK 2.5
+
+// LOAD A1 (USES REG0)
+mov reg4 reg0
+lsl reg0
+lsl reg0
+ldr reg0 // load A1 into reg0
+
+// LSL A1 by N  (uses REG1, assume A in REG0)
+mov reg5 reg1
+lsl reg0 reg1
+
+// ADD A1 LSB TO Y1
+add reg0 reg3
+mov reg7 reg3
+str reg2 
+mov reg6 reg2 
+add reg2 reg3
+mov reg3 reg6 // store new carry
+
+// CHUNK 3
+
+// LOAD A1 (USES REG0)
+mov reg4 reg0
+lsl reg0
+lsl reg0
+ldr reg0 // load A1 into reg0
+
+// LOL A by N  (uses REG2, require A0 store in REG0, X stored in REG1)
+mov reg5 reg2
+lol reg2 // LOL a0 by n
+mov reg0 reg1
+
+// LOAD Y2 (USES REG0, REG2)
+mov reg4 reg2
+lsl reg2 
+lsl reg2 // reg2 = 4 i 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 // reg0 = 64
+add reg2 reg0 
+inc reg2 // inc 3 times for y0, 0 times for y3.
+ldr reg2 
+
+// ADDING
+add reg0 reg1
+mov reg7 reg3 
+mov reg6 reg1 // add old carries
+add reg0 reg1 
+mov reg7 reg1
+add reg3 reg1 // add additional carry the new carry may have induced
+str reg2        // store resultant of y
+// reg3 has bonus carry stored 
+// want to add this to the next Y.
+
+// LOAD Y3 (USES REG0, REG2)
+mov reg4 reg2
+lsl reg2 
+lsl reg2 // reg2 = 4 i 
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 
+lsl reg0 // reg0 = 64
+add reg2 reg0 
+ldr reg2 
+
+add reg0 reg3
+str reg2
+
+// first n loop end
+
+//label n1_skip
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0 // 8
+inc reg5
+cmp reg0 reg5 // go back up if 8 > n
+jge loop_n1
 
 // label i_end
 

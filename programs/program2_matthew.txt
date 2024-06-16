@@ -1,0 +1,118 @@
+mem[66] = min;
+mem[67] = min2;
+mem[68] = max;
+mem[69] = max2;
+
+clr reg0
+mov reg0 reg1
+mov reg0 reg2
+mov reg0 reg3
+mov reg0 reg4
+mov reg0 reg5
+mov reg0 reg6
+
+sti 2
+sti 3
+
+not reg0
+
+sti 4
+sti 5
+
+// setup done
+
+//label bigloop
+
+mov reg4 reg0
+inc reg4
+mov reg0 reg5
+//label smolloop
+
+// flip the MSB of both MSbytes, compare.
+mov reg4 reg0
+lsl reg0
+ldr reg0 
+mov reg0 reg1
+
+mov reg5 reg0
+lsl reg0
+ldr reg0
+mov reg0 reg2
+
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 // msb bit mask
+
+xor reg1 reg0
+xor reg2 reg0
+
+cmp reg1 reg2
+jg r1_larger_0
+
+cmp reg2 reg1
+jg r2_larger_0
+
+// else assume regs equal. 
+// do same comparison but index increased by 1.
+
+mov reg4 reg0
+lsl reg0
+inc reg0
+ldr reg0 
+mov reg0 reg1
+
+mov reg5 reg0
+lsl reg0
+inc reg0
+ldr reg0
+mov reg0 reg2
+
+clr reg0
+inc reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0
+lsl reg0 
+lsl reg0 // msb bit mask
+mov reg0 reg3
+
+xor reg1 reg0
+xor reg2 reg0
+
+cmp reg1 reg2
+jg r1_larger_0
+
+cmp reg2 reg1
+jg r2_larger_0
+
+// THE SWAG BEGINS!
+
+label r1_larger_0
+
+mov reg4 reg0
+lsl reg0
+ldr reg0 
+mov reg0 reg1
+
+mov reg5 reg0
+lsl reg0
+ldr reg0
+mov reg0 reg2
+
+xor reg1 reg3
+xor reg2 reg3
+
+sub reg1 reg2
+
+ldi 4 
+cmp reg0 reg1
+
+label r2_larger_0
