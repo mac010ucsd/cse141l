@@ -1,0 +1,51 @@
+Program 2 
+
+Closest and farthest arithmetic pairs -- Write a program to find the absolute values of 
+the least and greatest arithmetic difference among all pairs of incoming values from Program 2. 
+Assume again that all values are two’s complement (“signed”) 16-bit integers. The array of 
+integers starts at location 0. Write the absolute value of the minimum difference in locations 
+66-67 and the maximum in 68-69. Format: mem[66] = MSB of smallest absolute value difference among 
+pairs; mem[67] = LSB. mem[68] = MSB of largest absolute value difference among pairs, mem[69] = LSB.
+
+max = 0;
+max2 = 0;
+min = 0xFF;
+min2 = 0xFF;
+val = 0
+val2 = 0
+for (i = 0; i < 31; i++) {
+	for (j = i+1; j < 32; j++) {
+		// FF + FF + 1 = 1 FF flip the second number and add 1
+		val2 = data[2i+1] + !data[2j+1] + 1
+		val = data[2i] + !data[2j] + CF // assume we have carry reg (CF) in ALU
+
+		// FF + FF + 01 = 1 FF FF
+		if (!cf) {
+			if (val >> 7 == 1) {
+				val2 = !val2 + 1;r
+				val = !val + CF;
+			}
+		}
+		if carry flag is set, discard it and return val1, val2
+		if carry flag is not set, val MS bit will determine sign.
+			if val MS bit == 1, flip and add 1 to get value
+			if val MS bit == 0, do nothing.
+		/*
+		1000 0000 0000 0000
+		0111 1111 1111 1111
+		1000 0000 0000 0000 (max difference?) 
+		*/
+		// structured to make jmp programming easier later.
+		
+		if (val > max | val == max & val2 > max2) {
+			max = val;
+			max2 = val2;
+		}
+
+		if (val < min | val == min & val2 > min2) {
+			min = val;
+			min2 = val2;
+		}
+		
+	} 
+}

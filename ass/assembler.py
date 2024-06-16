@@ -8,7 +8,7 @@ outfile = ""
 with open("asstable.txt", "r") as t:
     f = t.read()
 
-with open("p3.txt", "r") as t:
+with open("p2.txt", "r") as t:
     assfile = t.read()
 
 ins_name = []

@@ -1,8 +1,0 @@
-clr reg1
-inc reg1
-mov reg0 reg1
-mov reg2 reg0
-lsl reg1
-ldr reg0
-xor reg0 reg1
-ldi 6

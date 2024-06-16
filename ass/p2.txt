@@ -28,7 +28,7 @@ inc reg0
 ldr reg0
 mov reg0 reg2
 ldr reg5
-mov reg5 reg3
+mov reg0 reg3
 mov reg5 reg0
 inc reg0
 ldr reg0
@@ -54,9 +54,6 @@ mov reg0 reg6
 mov reg1 reg0
 not reg1
 add reg3 reg1
-clr reg1
-inc reg1
-add reg3 reg1
 add reg3 reg2
 mov reg3 reg1
 mov reg6 reg2
@@ -74,9 +71,6 @@ mov reg2 reg6
 mov reg0 reg2
 mov reg3 reg0
 not reg3
-add reg1 reg3
-clr reg3
-inc reg3
 add reg1 reg3
 add reg1 reg6
 ldi 4 //Label compare_diff
@@ -101,10 +95,10 @@ cmp reg3 reg1
 jgm mind_bigger
 cmp reg1 reg3
 jgm diff1_bigger
-cmp reg2 reg0
-jgm diff1_bigger
 cmp reg0 reg2
 jgm mind_bigger
+cmp reg2 reg0
+jgm diff1_bigger
 mov reg1 reg0 //Label mind_bigger
 sti 2
 mov reg2 reg0
